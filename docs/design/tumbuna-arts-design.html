@@ -1,0 +1,1248 @@
+<title>Tumbuna Arts Product Design</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: a long product spec. Sticky section nav, brand foundations first, then live mockups, then 40 screen specs with generated wireframes, then code. Bilum zigzag band is the single signature motif. */
+:root{
+  --bg:#FFFFFF; --bg2:#F7F3EF; --card:#FFFFFF; --fg:#1C1C1C; --fg2:#4A433E; --muted:#8A8078; --line:#E6E0DA;
+  --red:#D62828; --gold:#F4B400; --gold-ink:#9A6F00; --earth:#8B5E3C; --earth-tint:#F3EAE2; --green:#2E7D4F;
+  --code-bg:#1C1C1C; --code-fg:#F3EFEB; --wf:#D8D0C8; --wf2:#EEE8E2;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Manrope", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, Consolas, monospace;
+  /* fixed app-mockup tokens: the phones always show the app's light theme */
+  --a-bg:#FFFFFF; --a-sand:#F3EFEB; --a-ink:#1C1C1C; --a-red:#D62828; --a-gold:#F4B400; --a-earth:#8B5E3C; --a-mut:#8A8078; --a-line:#E6E0DA; --a-green:#2E7D4F;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#141210; --bg2:#1B1815; --card:#221E1A; --fg:#F5F1EC; --fg2:#CBC2B8; --muted:#968B80; --line:#3A342E;
+  --red:#EF4B4B; --gold-ink:#F7C93D; --earth:#C08A60; --earth-tint:#2E241C; --green:#4FB07A; --code-bg:#0D0B0A; --wf:#4A423B; --wf2:#2C2723; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#141210; --bg2:#1B1815; --card:#221E1A; --fg:#F5F1EC; --fg2:#CBC2B8; --muted:#968B80; --line:#3A342E;
+  --red:#EF4B4B; --gold-ink:#F7C93D; --earth:#C08A60; --earth-tint:#2E241C; --green:#4FB07A; --code-bg:#0D0B0A; --wf:#4A423B; --wf2:#2C2723; color-scheme:dark }
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.1}
+h2{font-size:clamp(28px,4vw,40px);font-weight:800;letter-spacing:-.02em}
+h3{font-size:20px;font-weight:700}
+p{margin:0}
+.lede{color:var(--fg2);max-width:65ch;font-size:16px}
+.over{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--earth)}
+code,.mono{font-family:var(--f-mono);font-size:.88em}
+a{color:var(--red)}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+
+/* bilum band: the signature motif */
+.bilum{height:10px;background:
+  linear-gradient(135deg,var(--a-red) 25%,transparent 25%) -5px 0/10px 10px,
+  linear-gradient(225deg,var(--a-red) 25%,transparent 25%) -5px 0/10px 10px,
+  linear-gradient(315deg,var(--a-ink) 25%,transparent 25%) 0 0/10px 10px,
+  linear-gradient(45deg,var(--a-ink) 25%,transparent 25%) 0 0/10px 10px,var(--a-gold)}
+
+nav.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav.top .wrap{display:flex;gap:4px;align-items:center;overflow-x:auto;scrollbar-width:none;padding-block:10px}
+nav.top a{flex:none;text-decoration:none;color:var(--fg2);font-weight:600;font-size:13px;padding:6px 12px;border-radius:999px}
+nav.top a:hover{background:var(--bg2);color:var(--fg)}
+nav.top .brand{font-family:var(--f-display);font-weight:800;color:var(--fg);margin-right:8px;display:flex;gap:8px;align-items:center;padding-left:0}
+nav.top .brand svg{width:24px;height:24px}
+
+section{padding-block:72px;border-bottom:1px solid var(--line)}
+.sec-head{display:grid;gap:12px;margin-bottom:36px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:20px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:20px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;min-width:0}
+.panel h3{margin-bottom:8px}
+.panel p+p{margin-top:8px}
+.muted{color:var(--muted)}
+ul.clean{margin:0;padding-left:18px}
+ul.clean li{margin:4px 0}
+
+/* hero */
+.hero{padding-block:56px 64px;border-bottom:none}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:48px;align-items:center}
+.hero h1{font-size:clamp(44px,7vw,88px);font-weight:800;letter-spacing:-.035em;line-height:.95}
+.hero h1 em{font-style:normal;color:var(--red)}
+.tag{font-family:var(--f-display);font-size:clamp(20px,2.4vw,26px);font-weight:600;margin-top:22px;line-height:1.3}
+.tag span{display:block}
+.tag span:nth-child(2){color:var(--earth)}
+.tag span:nth-child(3){color:var(--gold-ink)}
+.hero .lede{margin-top:20px}
+.facts{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.fact{border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;color:var(--fg2)}
+.hero-phones{display:flex;justify-content:center;gap:16px;align-items:flex-end}
+.hero-phones .phone:first-child{transform:translateY(24px) rotate(-4deg)}
+.hero-phones .phone:last-child{transform:rotate(3deg)}
+
+/* phones */
+.phone{width:256px;max-width:100%;flex:none;aspect-ratio:9/19;border-radius:38px;background:#0E0E0E;padding:8px;box-shadow:0 30px 60px -20px rgba(59,42,28,.45),0 0 0 1px rgba(0,0,0,.4)}
+.scr{position:relative;width:100%;height:100%;border-radius:30px;overflow:hidden;background:var(--a-bg);color:var(--a-ink);font-family:var(--f-body);font-size:10px;line-height:1.35;display:flex;flex-direction:column}
+.sb{height:26px;flex:none;display:flex;justify-content:space-between;align-items:center;padding:0 18px;font-size:9px;font-weight:700}
+.sb::after{content:"";width:28px;height:8px;border-radius:2px;border:1.5px solid currentColor;opacity:.8}
+.i{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.m-pad{padding:0 14px}
+.m-row{display:flex;align-items:center;gap:8px}
+.m-sp{flex:1}
+.m-h{font-family:var(--f-display);font-weight:800;letter-spacing:-.01em}
+.m-chip{border-radius:999px;padding:4px 10px;font-weight:700;font-size:9px;background:var(--a-sand);white-space:nowrap}
+.m-chip.on{background:var(--a-ink);color:#fff}
+.m-btn{border-radius:14px;background:var(--a-red);color:#fff;font-weight:800;text-align:center;padding:11px;font-size:11px}
+.m-btn.ghost{background:transparent;color:var(--a-ink);border:1.5px solid var(--a-line)}
+.m-tabs{margin-top:auto;display:flex;justify-content:space-around;border-top:1px solid var(--a-line);padding:8px 6px 14px;background:#fff}
+.m-tab{display:grid;justify-items:center;gap:2px;font-size:8px;font-weight:700;color:var(--a-mut)}
+.m-tab.on{color:var(--a-red)}
+.m-seal{width:12px;height:12px;color:var(--a-gold)}
+.m-card{border-radius:12px;overflow:hidden;background:#fff}
+.m-price{font-family:var(--f-display);font-weight:800}
+.m-sub{color:var(--a-mut);font-size:9px}
+
+/* art placeholders: CSS-generated material textures, stand-ins for real photography */
+.art{position:relative;background-color:#6b4226}
+.art-carve{background:repeating-linear-gradient(92deg,rgba(0,0,0,.12) 0 2px,transparent 2px 7px),radial-gradient(ellipse at 50% 35%,#b07a4f,#6b4226 55%,#3d2616)}
+.art-bilum{background:
+  linear-gradient(135deg,#D62828 25%,transparent 25%) -9px 0/18px 18px,linear-gradient(225deg,#D62828 25%,transparent 25%) -9px 0/18px 18px,
+  linear-gradient(315deg,#1C1C1C 25%,transparent 25%) 0 0/18px 18px,linear-gradient(45deg,#1C1C1C 25%,transparent 25%) 0 0/18px 18px,#F4B400}
+.art-tapa{background:radial-gradient(circle at 50% 50%,transparent 6px,#5E3D24 7px 8px,transparent 9px) 0 0/24px 24px,repeating-linear-gradient(0deg,transparent 0 11px,rgba(94,61,36,.5) 11px 13px),#E9D8C2}
+.art-basket{background:repeating-linear-gradient(45deg,#C99A5B 0 6px,#A7783F 6px 12px),#C99A5B;background-blend-mode:multiply}
+.art-basket::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(-45deg,rgba(255,255,255,.18) 0 6px,transparent 6px 12px)}
+.art-mask{background:radial-gradient(circle at 36% 42%,#F3EFEB 0 7%,#1C1C1C 7.5% 10%,transparent 10.5%),radial-gradient(circle at 64% 42%,#F3EFEB 0 7%,#1C1C1C 7.5% 10%,transparent 10.5%),radial-gradient(ellipse 30% 44% at 50% 50%,#8B5E3C 0 98%,transparent 100%),linear-gradient(160deg,#2b1c12,#4a3020)}
+.art-paint{background:radial-gradient(circle at 70% 30%,#F4B400 0 14%,transparent 15%),linear-gradient(120deg,transparent 40%,#D62828 40% 52%,transparent 52%),repeating-linear-gradient(0deg,#1C1C1C 0 8px,#2a2a2a 8px 9px)}
+.art-shell{background:radial-gradient(circle at 30% 30%,#fff 0 8%,transparent 9%) 0 0/22px 22px,radial-gradient(ellipse at 50% 60%,#E9D8C2,#8B5E3C)}
+
+/* mockup gallery */
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,272px),1fr));gap:40px 24px}
+.shot{display:grid;gap:14px;justify-items:center;align-content:start}
+.shot figcaption{max-width:300px;font-size:13.5px;color:var(--fg2);justify-self:stretch}
+.shot figcaption b{display:block;font-family:var(--f-display);font-size:17px;color:var(--fg);margin-bottom:2px}
+figure{margin:0}
+
+/* color */
+.swatches{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:16px}
+.sw{border-radius:16px;overflow:hidden;border:1px solid var(--line);background:var(--card)}
+.sw .chip{height:110px;display:flex;align-items:flex-end;padding:12px;font-family:var(--f-display);font-weight:700;font-size:18px}
+.sw .meta{padding:12px 14px;font-size:13px;display:grid;gap:4px}
+.sw .meta .mono{color:var(--muted)}
+.ratio{display:flex;height:22px;border-radius:999px;overflow:hidden;margin-top:24px;border:1px solid var(--line)}
+.tones{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.tones i{width:26px;height:26px;border-radius:7px;border:1px solid rgba(0,0,0,.08)}
+
+/* type */
+.type-row{display:grid;grid-template-columns:150px minmax(0,1fr);gap:20px;padding:16px 0;border-top:1px solid var(--line);align-items:baseline}
+.type-row .spec{font-size:12px;color:var(--muted);font-family:var(--f-mono)}
+
+/* components */
+.btn{font:inherit;font-weight:800;border-radius:16px;padding:13px 22px;border:0;cursor:pointer;font-size:15px}
+.btn.p{background:var(--red);color:#fff}
+.btn.s{background:var(--fg);color:var(--bg)}
+.btn.o{background:transparent;color:var(--fg);border:1.5px solid var(--line)}
+.btn.t{background:transparent;color:var(--red);padding-inline:8px}
+.demo-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.chip2{border-radius:999px;padding:7px 14px;font-weight:700;font-size:13px;background:var(--bg2);border:1px solid var(--line);color:var(--fg)}
+.chip2.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.badge{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:4px 10px 4px 6px;font-size:12px;font-weight:800}
+.badge svg{width:16px;height:16px}
+.b-ver{background:#FFF6DB;color:#7a5800}
+.b-her{background:var(--earth-tint);color:var(--earth)}
+.b-new{background:#FCE9E9;color:#A81E1E}
+.b-ok{background:#E3F2E9;color:#22603C}
+.field{display:grid;gap:6px;font-size:13px;font-weight:700}
+.field input{font:inherit;font-weight:500;padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);color:var(--fg)}
+.field input:focus{border-color:var(--red);outline:none}
+.pcard{width:180px;max-width:100%;display:grid;gap:8px}
+.pcard .img{aspect-ratio:4/5;border-radius:12px;position:relative;overflow:hidden}
+.pcard .heart{position:absolute;top:8px;right:8px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.92);display:grid;place-items:center;color:#1C1C1C}
+.pcard .t{font-weight:700;font-size:14px;line-height:1.3}
+.pcard .a{font-size:12px;color:var(--muted);display:flex;gap:4px;align-items:center}
+.pcard .pr{font-family:var(--f-display);font-weight:800;font-size:17px}
+.scale{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end}
+.scale div{background:var(--red);opacity:.85;border-radius:3px}
+.scale span{display:block;font-size:11px;font-family:var(--f-mono);color:var(--muted);margin-top:4px}
+.radii{display:flex;flex-wrap:wrap;gap:14px}
+.radii div{width:64px;height:64px;background:var(--bg2);border:2px solid var(--earth);display:grid;place-items:end center;font-size:11px;font-family:var(--f-mono);padding-bottom:4px}
+.elev{display:flex;flex-wrap:wrap;gap:18px}
+.elev div{width:110px;height:72px;border-radius:14px;background:var(--card);display:grid;place-items:center;font-weight:700;font-size:13px}
+
+/* icons */
+.icons{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px}
+.icons div{border:1px solid var(--line);border-radius:12px;padding:14px 6px 10px;display:grid;justify-items:center;gap:8px;font-size:11px;color:var(--fg2);background:var(--card)}
+.icons .i{width:24px;height:24px;color:var(--fg)}
+
+/* hierarchy tree */
+.tree{font-family:var(--f-mono);font-size:13px;line-height:1.75;white-space:pre;overflow-x:auto;background:var(--bg2);border-radius:16px;padding:22px;border:1px solid var(--line)}
+.tree b{color:var(--red);font-weight:500}
+.tree i{color:var(--earth);font-style:normal}
+
+/* specs */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.filters button{font:inherit;cursor:pointer}
+.spec-sec{margin-top:44px}
+.spec-sec>h3{font-size:24px;display:flex;align-items:baseline;gap:12px;margin-bottom:18px}
+.spec-sec>h3 small{font-family:var(--f-body);font-size:13px;color:var(--muted);font-weight:600}
+.specs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,520px),1fr));gap:18px}
+.spec{display:grid;grid-template-columns:118px minmax(0,1fr);gap:18px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+.spec h4{font-family:var(--f-display);font-size:18px;margin:0 0 2px}
+.spec .route{font-family:var(--f-mono);font-size:11.5px;color:var(--earth)}
+.spec dl{margin:12px 0 0;display:grid;gap:8px;font-size:13.5px}
+.spec dt{font-size:10.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.spec dd{margin:0 0 2px;color:var(--fg2)}
+@media (max-width:520px){.spec{grid-template-columns:1fr}.spec .wf{justify-self:center}}
+
+/* low-fi wireframe */
+.wf{width:118px;height:236px;border:2px solid var(--wf);border-radius:18px;padding:7px 6px;display:flex;flex-direction:column;gap:4px;overflow:hidden;background:var(--bg)}
+.wf>*{flex:none;border-radius:3px;background:var(--wf2)}
+.wf .st{height:4px;background:none;border-top:2px dotted var(--wf)}
+.wf .hd{height:12px;display:flex;justify-content:space-between;background:none}
+.wf .hd::before,.wf .hd::after{content:"";width:40%;background:var(--wf);border-radius:3px}
+.wf .hd::after{width:18%}
+.wf .sr{height:12px;border-radius:999px;border:1.5px solid var(--wf);background:none}
+.wf .ch{height:8px;background:repeating-linear-gradient(90deg,var(--wf) 0 22px,transparent 22px 26px)}
+.wf .hr{height:56px;background:var(--wf)}
+.wf .im{height:96px;background:linear-gradient(to top right,transparent 49%,var(--wf) 49% 51%,transparent 51%),linear-gradient(to top left,transparent 49%,var(--wf) 49% 51%,transparent 51%),var(--wf2)}
+.wf .ti{height:6px;width:55%;background:var(--wf)}
+.wf .rw{height:44px;background:repeating-linear-gradient(90deg,var(--wf2) 0 40px,transparent 40px 44px)}
+.wf .av{height:22px;background:radial-gradient(circle,var(--wf) 9px,transparent 10px) 0 0/26px 22px}
+.wf .gr{height:96px;background:repeating-linear-gradient(90deg,var(--wf2) 0 48%,transparent 48% 52%,var(--wf2) 52% 100%);-webkit-mask:repeating-linear-gradient(0deg,#000 0 44px,transparent 44px 48px);mask:repeating-linear-gradient(0deg,#000 0 44px,transparent 44px 48px)}
+.wf .ls{height:54px;background:repeating-linear-gradient(0deg,transparent 0 3px,var(--wf2) 3px 17px,transparent 17px 18px)}
+.wf .tx{height:22px;background:repeating-linear-gradient(0deg,transparent 0 3px,var(--wf) 3px 5px,transparent 5px 7px);-webkit-mask:linear-gradient(90deg,#000 85%,transparent 85%);mask:linear-gradient(90deg,#000 85%,transparent 85%)}
+.wf .in{height:14px;border:1.5px solid var(--wf);background:none}
+.wf .ins{height:50px;background:repeating-linear-gradient(0deg,transparent 0 2px,var(--wf2) 2px 16px,transparent 16px 18px);border-radius:0}
+.wf .bt{height:16px;background:var(--fg2);opacity:.55}
+.wf .b2{height:16px;border:1.5px solid var(--wf);background:none}
+.wf .tb{height:16px;margin-top:auto;background:radial-gradient(circle,var(--wf) 3.5px,transparent 4px) 0 50%/22px 16px;border-top:1.5px solid var(--wf);border-radius:0}
+.wf .ct{height:20px;margin-top:auto;background:linear-gradient(90deg,var(--wf2) 0 35%,transparent 35% 42%,var(--fg2) 42%);opacity:.7}
+.wf .ks{height:30px;background:repeating-linear-gradient(90deg,var(--wf2) 0 31%,transparent 31% 34.5%)}
+.wf .cr{height:48px;background:repeating-linear-gradient(90deg,transparent 0 6px,var(--wf) 6px 14px,transparent 14px 18px);-webkit-mask:linear-gradient(0deg,#000 60%,transparent 60%);mask:linear-gradient(0deg,#000 60%,transparent 60%)}
+.wf .sg{height:12px;border:1.5px solid var(--wf);background:linear-gradient(90deg,var(--wf) 0 33%,transparent 33%);border-radius:999px}
+.wf .sp_{height:8px;background:radial-gradient(circle,var(--fg2) 3px,transparent 3.5px) 0 50%/33.3% 8px repeat-x;opacity:.6}
+.wf .mp{height:80px;background:radial-gradient(circle at 30% 40%,var(--wf) 4px,transparent 5px),radial-gradient(circle at 70% 60%,var(--wf) 4px,transparent 5px),repeating-linear-gradient(30deg,var(--wf2) 0 8px,transparent 8px 10px)}
+.wf .qr{height:70px;width:70px;align-self:center;background:conic-gradient(var(--wf) 25%,transparent 0 50%,var(--wf) 0 75%,transparent 0) 0 0/14px 14px;border:3px solid var(--wf)}
+.wf .cm{flex:1;background:radial-gradient(circle,transparent 26px,var(--fg2) 27px);opacity:.5;border:2px dashed var(--wf)}
+.wf .lg{height:60px;margin-top:40px;width:60px;align-self:center;border-radius:16px;background:var(--wf)}
+.wf .dt{height:6px;background:radial-gradient(circle,var(--wf) 2.5px,transparent 3px) 50% 50%/10px 6px repeat-x;width:34px;align-self:center}
+.wf .tg{height:54px;background:repeating-linear-gradient(0deg,transparent 0 3px,var(--wf2) 3px 17px,transparent 17px 18px);position:relative}
+.wf .tg::after{content:"";position:absolute;right:4px;top:6px;width:14px;height:44px;background:repeating-linear-gradient(0deg,var(--wf) 0 8px,transparent 8px 18px);border-radius:4px}
+.wf .tl{height:60px;background:radial-gradient(circle,var(--wf) 3px,transparent 3.5px) 4px 0/8px 15px repeat-y,repeating-linear-gradient(0deg,transparent 0 5px,var(--wf2) 5px 11px,transparent 11px 15px) 16px 0/80% 100% no-repeat}
+.wf .sh{margin-top:auto;height:62px;border-radius:10px 10px 3px 3px;background:var(--wf2);border-top:3px solid var(--wf)}
+.wf .bl{height:5px;background:repeating-linear-gradient(135deg,var(--wf) 0 3px,transparent 3px 6px)}
+.wf .fl{flex:1;background:none}
+
+/* code */
+pre.code{background:var(--code-bg);color:var(--code-fg);border-radius:16px;padding:22px;overflow-x:auto;font-family:var(--f-mono);font-size:12.5px;line-height:1.65;margin:0}
+pre.code .c{color:#A89E94}
+pre.code .k{color:#F4B400}
+pre.code .s{color:#F08A6E}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:16px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);background:var(--bg2)}
+tr:last-child td{border-bottom:0}
+td code{color:var(--earth)}
+
+footer{padding-block:48px 64px;color:var(--muted);font-size:13px}
+
+@media (max-width:860px){
+  .hero-grid{grid-template-columns:1fr}
+  .hero-phones .phone:first-child{display:none}
+  .type-row{grid-template-columns:1fr;gap:4px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@keyframes scan{0%,100%{top:18%}50%{top:78%}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="logo-mark" viewBox="0 0 120 120">
+      <rect width="120" height="120" rx="30" fill="#D62828"/>
+      <path d="M22 40 L31 31 L40 40 L49 31 L58 40 L67 31 L76 40 L85 31 L94 40 L98 36" fill="none" stroke="#F4B400" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+      <path d="M22 52 L31 43 L40 52 L49 43 L58 52 L67 43 L76 52 L85 43 L94 52 L98 48" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+      <path d="M60 58 L69 67 L60 76 L51 67Z" fill="#FFFFFF"/>
+      <path d="M60 76 L69 85 L60 94 L51 85Z" fill="#F4B400"/>
+      <path d="M60 94 L66 100 L60 106 L54 100Z" fill="#FFFFFF"/>
+    </symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></symbol>
+    <symbol id="i-heritage" viewBox="0 0 24 24"><path d="M3 5h6a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H3z"/><path d="M21 5h-6a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h7z"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24"><path d="M5 8h14l-1 13H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16v-5a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></symbol>
+    <symbol id="i-scan" viewBox="0 0 24 24"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3M7 12h10"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></symbol>
+    <symbol id="i-seal" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M12 1.8l2.5 1.9 3.1.1 1 3 2.5 1.8-.9 3 .9 3-2.5 1.8-1 3-3.1.1L12 22.2l-2.5-1.9-3.1-.1-1-3-2.5-1.8.9-3-.9-3 2.5-1.8 1-3 3.1-.1z"/><path d="M8.3 12.2l2.5 2.5 4.9-5" stroke="#fff" stroke-width="2.4"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M6 20v-9M12 20V5M18 20v-6M3 20h18"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/></symbol>
+    <symbol id="i-filter" viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 3v12M7 8l5-5 5 5M5 14v6h14v-6"/></symbol>
+    <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5l11 7-11 7z"/></symbol>
+    <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M3 7h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H3z"/><path d="M3 7l12-3v3M16 13.5h2"/></symbol>
+    <symbol id="i-cert" viewBox="0 0 24 24"><path d="M6 3h12v13H6z"/><path d="M9 7h6M9 10h6M10 16l-1 5 3-1.5 3 1.5-1-5"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></symbol>
+    <symbol id="i-truck" viewBox="0 0 24 24"><path d="M2 6h12v10H2zM14 10h4l3 3v3h-7"/><circle cx="6" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5v.7M12 17.5v.01"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3.2 3.6 3.2 14.4 0 18M12 3c-3.2 3.6-3.2 14.4 0 18"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></symbol>
+    <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M5 19c0-9 6-14 15-14 0 9-5 15-14 15M5 19l7-7"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+  </defs>
+</svg>
+
+<nav class="top" aria-label="Sections">
+  <div class="wrap">
+    <a class="brand" href="#top"><svg><use href="#logo-mark"/></svg>Tumbuna Arts</a>
+    <a href="#brand">Brand</a><a href="#color">Color</a><a href="#type">Type</a><a href="#system">Design system</a><a href="#icons">Icons</a><a href="#nav">Navigation</a><a href="#flows">User flows</a><a href="#hierarchy">Screen map</a><a href="#hifi">Hi-fi screens</a><a href="#specs">Screen specs</a><a href="#code">Build</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="over">Product design spec · v1.0 · November 2026</div>
+      <h1 style="margin-top:14px">Tumbuna<br><em>Arts</em></h1>
+      <p class="tag"><span>Buy PNG Art.</span><span>Discover Its Story.</span><span>Preserve Its Culture.</span></p>
+      <p class="lede"><i>Tumbuna</i> is Tok Pisin for ancestors. Tumbuna Arts is a mobile marketplace and living archive for Papua New Guinean carvers, weavers, bilum makers and painters. Every listing ships with its story, its province, its materials and a QR-verifiable certificate of authenticity.</p>
+      <div class="facts"><span class="fact">React Native + Expo</span><span class="fact">Node.js / Express API</span><span class="fact">Microsoft SQL Server</span><span class="fact">All 22 provinces, incl. NCD &amp; Bougainville</span><span class="fact">Prices in Kina (PGK)</span></div>
+    </div>
+    <div class="hero-phones" id="hero-phones"></div>
+  </div>
+</header>
+<div class="bilum" role="presentation"></div>
+
+<!-- BRAND -->
+<section id="brand">
+  <div class="wrap">
+    <div class="sec-head"><div class="over">01 · Branding</div><h2>A marketplace with an elder's memory</h2>
+      <p class="lede">The brand sits between a premium shop and a cultural institution. Commerce is red and confident. Heritage is earth brown and unhurried. Trust is gold. The bilum's zigzag ties them together.</p></div>
+    <div class="grid3">
+      <div class="panel"><h3>Positioning</h3><p>The only place to buy PNG art where the maker, the meaning and the authenticity come with the object. Etsy's ease of buying, with the depth of a museum label.</p></div>
+      <div class="panel"><h3>Brand pillars</h3><ul class="clean"><li><b>Authentic.</b> Verified makers, certified works.</li><li><b>Storied.</b> Culture is content, not decoration.</li><li><b>Fair.</b> Artists see every kina they earn.</li><li><b>Proud.</b> Made in PNG, shown to the world.</li></ul></div>
+      <div class="panel"><h3>Voice</h3><p>Warm, plain and respectful. Use the maker's own words and Tok Pisin where it belongs ("Moning", "Tenkyu tru"), always with English beside it. Never call work "tribal" or "primitive"; name the people, place and technique instead.</p></div>
+    </div>
+
+    <h3 style="margin:48px 0 18px">Logo concepts</h3>
+    <div class="grid3">
+      <div class="panel" style="display:grid;gap:14px">
+        <svg viewBox="0 0 120 120" width="96" height="96" role="img" aria-label="Bilum T mark"><use href="#logo-mark"/></svg>
+        <div><div class="over" style="color:var(--red)">Recommended · Primary</div><h3>A · Bilum T</h3></div>
+        <p class="muted">Two looped zigzag rows form the crossbar of a T, and a column of diamonds forms the stem: the exact motif of a looped bilum strap. Reads at 16px, works as the app icon, splash and favicon.</p>
+      </div>
+      <div class="panel" style="display:grid;gap:14px">
+        <svg viewBox="0 0 120 120" width="96" height="96" role="img" aria-label="Ancestor face mark">
+          <rect width="120" height="120" rx="30" fill="#1C1C1C"/>
+          <ellipse cx="60" cy="64" rx="28" ry="42" fill="#8B5E3C"/>
+          <path d="M42 34 L60 25 L78 34M45 42 L60 34 L75 42" fill="none" stroke="#F4B400" stroke-width="4" stroke-linejoin="round"/>
+          <circle cx="49" cy="60" r="8" fill="none" stroke="#F3EFEB" stroke-width="3.5"/><circle cx="49" cy="60" r="3" fill="#D62828"/>
+          <circle cx="71" cy="60" r="8" fill="none" stroke="#F3EFEB" stroke-width="3.5"/><circle cx="71" cy="60" r="3" fill="#D62828"/>
+          <path d="M60 56 V82M53 84 Q60 91 67 84" fill="none" stroke="#F3EFEB" stroke-width="3.5" stroke-linecap="round"/>
+          <ellipse cx="60" cy="96" rx="9" ry="3.5" fill="#D62828"/>
+        </svg>
+        <div><div class="over">Alternate · Heritage sub-brand</div><h3>B · Tumbuna face</h3></div>
+        <p class="muted">An ancestor face drawn from the shared vocabulary of carved masks: ringed eyes, long nose, chevron brow. Used for the Heritage archive tab and printed tags. Kept generic so it copies no single clan design.</p>
+      </div>
+      <div class="panel" style="display:grid;gap:14px">
+        <svg viewBox="0 0 120 120" width="96" height="96" role="img" aria-label="Kundu seal">
+          <defs><path id="arc" d="M60 60 m-44 0 a44 44 0 1 1 88 0 a44 44 0 1 1 -88 0"/></defs>
+          <circle cx="60" cy="60" r="57" fill="#F4B400"/><circle cx="60" cy="60" r="35" fill="#FFF6DB" stroke="#1C1C1C" stroke-width="2"/>
+          <text font-family="IBM Plex Mono, monospace" font-size="8.4" font-weight="500" fill="#1C1C1C" letter-spacing="1.2"><textPath href="#arc">AUTHENTIC · TUMBUNA ARTS · PAPUA NEW GUINEA ·</textPath></text>
+          <path d="M48 40h24l-7 20 7 20H48l7-20z" fill="#1C1C1C"/><path d="M52 47h16M52 73h16" stroke="#D62828" stroke-width="3"/>
+        </svg>
+        <div><div class="over">System mark · Verification</div><h3>C · Kundu seal</h3></div>
+        <p class="muted">An hourglass kundu drum inside a ringed seal. It appears only where authenticity is claimed: certificates, QR tags, the verified badge's large form. Its scarcity is what makes it mean something.</p>
+      </div>
+    </div>
+
+    <div class="grid2" style="margin-top:20px">
+      <div class="panel">
+        <h3>App icon &amp; wordmark</h3>
+        <div class="demo-row" style="gap:20px;margin-top:12px">
+          <svg viewBox="0 0 120 120" width="72" height="72"><use href="#logo-mark"/></svg>
+          <svg viewBox="0 0 120 120" width="48" height="48"><use href="#logo-mark"/></svg>
+          <svg viewBox="0 0 120 120" width="28" height="28"><use href="#logo-mark"/></svg>
+          <div style="font-family:var(--f-display);font-weight:800;font-size:30px;letter-spacing:-.03em;line-height:1">Tumbuna<span style="color:var(--red)">·</span>Arts</div>
+        </div>
+        <p class="muted" style="margin-top:14px">Wordmark: Bricolage Grotesque ExtraBold, −3% tracking, red interpunct. Clear space equals the height of one diamond. Minimum mark size 20px.</p>
+      </div>
+      <div class="panel">
+        <h3>Brand textures</h3>
+        <div class="demo-row" style="margin-top:12px">
+          <div class="art art-bilum" style="width:64px;height:64px;border-radius:12px" title="Bilum zigzag"></div>
+          <div class="art art-carve" style="width:64px;height:64px;border-radius:12px" title="Carved wood grain"></div>
+          <div class="art art-tapa" style="width:64px;height:64px;border-radius:12px" title="Tapa cloth"></div>
+          <div class="art art-basket" style="width:64px;height:64px;border-radius:12px" title="Woven basket"></div>
+        </div>
+        <p class="muted" style="margin-top:14px">Bilum zigzag (brand moments, 6–10px bands), wood grain (heritage headers), tapa rings (empty states), basket weave (packaging). Textures frame photography and never sit behind body text.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COLOR -->
+<section id="color">
+  <div class="wrap">
+    <div class="sec-head"><div class="over">02 · Color palette</div><h2>Flag colors, carved-wood neutrals</h2>
+      <p class="lede">The five brand colors come from the PNG flag and kwila-wood carving. Each has one job, so color alone tells a user where they are: red means act, gold means verified, brown means heritage.</p></div>
+    <div class="swatches">
+      <div class="sw"><div class="chip" style="background:#D62828;color:#fff">Kumul Red</div><div class="meta"><b>Primary · actions</b><span class="mono">#D62828 · pressed #A81E1E</span><span>Buy buttons, active tab, cart badge, price drops.</span></div></div>
+      <div class="sw"><div class="chip" style="background:#1C1C1C;color:#fff">Night Ink</div><div class="meta"><b>Text · dark surfaces</b><span class="mono">#1C1C1C</span><span>Body text, Studio header, splash, selected chips.</span></div></div>
+      <div class="sw"><div class="chip" style="background:#F4B400;color:#1C1C1C">Paradise Gold</div><div class="meta"><b>Trust · verification</b><span class="mono">#F4B400 · text #9A6F00</span><span>Verified badge, certificate seal, ratings. Never a button fill.</span></div></div>
+      <div class="sw"><div class="chip" style="background:#8B5E3C;color:#fff">Kwila Brown</div><div class="meta"><b>Heritage archive</b><span class="mono">#8B5E3C · tint #F3EAE2</span><span>Archive headers, story chapters, material tags.</span></div></div>
+      <div class="sw"><div class="chip" style="background:#FFFFFF;color:#1C1C1C;border-bottom:1px solid #E6E0DA">Sago White</div><div class="meta"><b>Canvas</b><span class="mono">#FFFFFF · sand #F3EFEB</span><span>Screens stay white so artwork photos carry the color.</span></div></div>
+    </div>
+    <div class="ratio" aria-label="Color ratio 60 white, 20 ink, 10 sand, 6 red, 2 gold, 2 brown">
+      <div style="flex:60;background:#fff"></div><div style="flex:20;background:#1C1C1C"></div><div style="flex:10;background:#F3EFEB"></div><div style="flex:6;background:#D62828"></div><div style="flex:2;background:#F4B400"></div><div style="flex:2;background:#8B5E3C"></div>
+    </div>
+    <p class="muted" style="margin-top:8px;font-size:13px">Usage ratio on a typical marketplace screen: 60 white · 20 ink · 10 sand · 6 red · 2 gold · 2 brown. Artwork photography supplies the rest.</p>
+
+    <div class="grid2" style="margin-top:32px">
+      <div class="panel"><h3>Warm neutrals</h3><p class="muted">Greys are tinted toward kwila brown so they sit naturally beside wood and fibre.</p>
+        <div class="tones"><i style="background:#FAF8F6"></i><i style="background:#F3EFEB"></i><i style="background:#E6E0DA"></i><i style="background:#CFC6BD"></i><i style="background:#8A8078"></i><i style="background:#4A433E"></i><i style="background:#1C1C1C"></i></div>
+        <p class="mono muted" style="margin-top:6px;font-size:11px">sand50 · 100 · 200 · 300 · 500 · 700 · ink</p></div>
+      <div class="panel"><h3>Semantic</h3><p class="muted">Kept apart from brand red. Errors always pair color with an icon and text.</p>
+        <div class="tones"><i style="background:#2E7D4F" title="Rainforest success"></i><i style="background:#2F6690" title="Lagoon info"></i><i style="background:#F4B400" title="Warning"></i><i style="background:#C0392B" title="Error"></i></div>
+        <p class="mono muted" style="margin-top:6px;font-size:11px">rainforest #2E7D4F · lagoon #2F6690 · warning #F4B400 · error #C0392B</p></div>
+      <div class="panel"><h3>Dark mode</h3><p class="muted">Night-market dark: warm charcoal, never pure black. Red lifts to #EF4B4B for 4.5:1 contrast.</p>
+        <div class="tones"><i style="background:#141210"></i><i style="background:#1B1815"></i><i style="background:#2A2622"></i><i style="background:#EF4B4B"></i><i style="background:#F4B400"></i><i style="background:#C08A60"></i><i style="background:#F5F1EC"></i></div></div>
+      <div class="panel"><h3>Accessibility</h3><ul class="clean"><li>Ink on white 16.8:1; red on white 4.9:1 (AA for text ≥ 14px bold).</li><li>Gold is never text on white; use #9A6F00 (5.1:1).</li><li>White on red buttons 4.9:1.</li><li>Touch targets ≥ 44pt.</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- TYPE -->
+<section id="type">
+  <div class="wrap">
+    <div class="sec-head"><div class="over">03 · Typography</div><h2>Hand-cut display, clear reading text</h2>
+      <p class="lede">Bricolage Grotesque has the slightly irregular, chiselled feel of carved lettering without being a novelty face. Manrope is calm and readable for long stories and dense listings. IBM Plex Mono marks anything verifiable: certificate serials, order numbers, ledger hashes. All three ship through <code>@expo-google-fonts</code>.</p></div>
+    <div>
+      <div class="type-row"><div class="spec">display · 34/40 · 800</div><div style="font-family:var(--f-display);font-weight:800;font-size:34px;line-height:1.15;letter-spacing:-.015em">Sepik River storyboards</div></div>
+      <div class="type-row"><div class="spec">h1 · 28/34 · 700</div><div style="font-family:var(--f-display);font-weight:700;font-size:28px;line-height:1.2">Featured artists this week</div></div>
+      <div class="type-row"><div class="spec">h2 · 22/28 · 700</div><div style="font-family:var(--f-display);font-weight:700;font-size:22px">The meaning behind the crocodile</div></div>
+      <div class="type-row"><div class="spec">h3 · 18/24 · Manrope 700</div><div style="font-weight:700;font-size:18px">Materials &amp; technique</div></div>
+      <div class="type-row"><div class="spec">body · 16/24 · 400</div><div style="font-size:16px;max-width:60ch">Looped by hand from tulip-tree bark fibre and dyed with forest pigments, this bilum took Mary eleven weeks to complete in her village above Goroka.</div></div>
+      <div class="type-row"><div class="spec">bodySm · 14/20 · 400</div><div style="font-size:14px;color:var(--fg2)">Ships from Wewak via Post PNG · 5–9 days within PNG</div></div>
+      <div class="type-row"><div class="spec">overline · 11/16 · 700 · +12%</div><div class="over">Eastern Highlands · Bilum</div></div>
+      <div class="type-row"><div class="spec">price · 20/24 · Bricolage 700</div><div style="font-family:var(--f-display);font-weight:700;font-size:20px">K 1,250.00 <span style="font-family:var(--f-body);font-weight:500;font-size:13px;color:var(--muted)">≈ US$ 310</span></div></div>
+      <div class="type-row"><div class="spec">serial · 13/18 · Plex Mono</div><div class="mono" style="font-size:13px;letter-spacing:.04em">TA-COA-ESP-2026-004217</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SYSTEM -->
+<section id="system">
+  <div class="wrap">
+    <div class="sec-head"><div class="over">04 · Design system &amp; UI style guide</div><h2>Components that let the art lead</h2>
+      <p class="lede">White canvas, generous photography, soft 16px corners on interactive objects, pills for filters and badges. Shadows are warm-tinted and used only on things that float: sticky bars, sheets and the cart button.</p></div>
+    <div class="grid2">
+      <div class="panel"><h3>Buttons</h3>
+        <div class="demo-row" style="margin-top:10px"><button class="btn p">Add to cart</button><button class="btn s">Buy now</button><button class="btn o">Message artist</button><button class="btn t">Read the story</button></div>
+        <p class="muted" style="margin-top:12px;font-size:13px">Height 52, radius 16, Manrope ExtraBold 15. One primary (red) per screen. Primary sits in the bottom thumb zone, full width, in a sticky bar on commerce screens.</p></div>
+      <div class="panel"><h3>Chips &amp; badges</h3>
+        <div class="demo-row" style="margin-top:10px"><span class="chip2 on">All</span><span class="chip2">Carvings</span><span class="chip2">Bilums</span><span class="chip2">Tapa</span><span class="chip2">Baskets</span></div>
+        <div class="demo-row" style="margin-top:12px"><span class="badge b-ver"><svg class="i" style="color:#F4B400"><use href="#i-seal"/></svg>Verified artist</span><span class="badge b-her"><svg class="i"><use href="#i-heritage"/></svg>Heritage story</span><span class="badge b-new">One of a kind</span><span class="badge b-ok"><svg class="i"><use href="#i-check"/></svg>Certificate</span></div></div>
+      <div class="panel"><h3>Artwork card</h3>
+        <div class="demo-row" style="margin-top:10px;align-items:flex-start;gap:16px">
+          <div class="pcard"><div class="img art art-carve"><div class="heart"><svg class="i"><use href="#i-heart"/></svg></div></div><div class="t">Crocodile spirit storyboard</div><div class="a">Joseph K. <svg class="i m-seal" style="width:14px;height:14px;color:#F4B400"><use href="#i-seal"/></svg> · East Sepik</div><div class="pr">K 1,250</div></div>
+          <div class="pcard"><div class="img art art-bilum"><div class="heart"><svg class="i" style="fill:#D62828;stroke:#D62828"><use href="#i-heart"/></svg></div></div><div class="t">Highlands wool bilum, large</div><div class="a">Mary T. <svg class="i" style="width:14px;height:14px;color:#F4B400"><use href="#i-seal"/></svg> · E. Highlands</div><div class="pr">K 180</div></div>
+        </div>
+        <p class="muted" style="margin-top:12px;font-size:13px">4:5 image, radius 12. Title 2 lines max, artist + seal + province, price in Kina. Heart toggles wishlist with a haptic tick.</p></div>
+      <div class="panel"><h3>Inputs</h3>
+        <div style="display:grid;gap:12px;margin-top:10px">
+          <label class="field" for="demo-email">Email or phone<input id="demo-email" value="kila.m@example.com"></label>
+          <label class="field" for="demo-price">Price (Kina)<input id="demo-price" value="K 450.00"></label>
+        </div>
+        <p class="muted" style="margin-top:12px;font-size:13px">Label above, radius 12, 1.5px border, red focus ring. Phone fields default to +675.</p></div>
+      <div class="panel"><h3>Spacing · 4pt grid</h3>
+        <div class="scale" style="margin-top:12px"><div><div style="width:4px;height:4px"></div><span>4</span></div><div><div style="width:8px;height:8px"></div><span>8</span></div><div><div style="width:12px;height:12px"></div><span>12</span></div><div><div style="width:16px;height:16px"></div><span>16</span></div><div><div style="width:24px;height:24px"></div><span>24</span></div><div><div style="width:32px;height:32px"></div><span>32</span></div><div><div style="width:48px;height:48px"></div><span>48</span></div><div><div style="width:64px;height:64px"></div><span>64</span></div></div>
+        <p class="muted" style="margin-top:12px;font-size:13px">Screen gutter 16. Card padding 16. Section gap 32. Grid gutter 12 (2-column artwork grid).</p></div>
+      <div class="panel"><h3>Radius &amp; elevation</h3>
+        <div class="radii" style="margin-top:12px"><div style="border-radius:4px">4</div><div style="border-radius:8px">8</div><div style="border-radius:12px">12</div><div style="border-radius:16px">16</div><div style="border-radius:24px">24</div><div style="border-radius:999px">pill</div></div>
+        <div class="elev" style="margin-top:18px"><div style="box-shadow:0 2px 8px rgba(59,42,28,.08);border:1px solid var(--line)">e1 card</div><div style="box-shadow:0 6px 16px rgba(59,42,28,.14)">e2 sticky</div><div style="box-shadow:0 12px 28px rgba(59,42,28,.22)">e3 sheet</div></div></div>
+    </div>
+    <div class="grid3" style="margin-top:20px">
+      <div class="panel"><h3>Imagery</h3><p class="muted">Natural daylight, plain sand or white backdrop, object fills 70% of frame. Minimum 4 photos: front, back, detail, scale (in hand). Optional 15-second video of the maker at work.</p></div>
+      <div class="panel"><h3>Motion</h3><p class="muted">150ms for taps, 250ms for screen transitions, 400ms for the certificate reveal. Shared-element transition from card image to product hero. Springs (damping 18) for sheets. Reduced-motion users get fades.</p></div>
+      <div class="panel"><h3>Empty &amp; loading</h3><p class="muted">Skeletons in sand100 that keep the 4:5 card shape. Empty states use the tapa texture with one line and one action: "Your wishlist is empty. Explore bilums from Goroka."</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ICONS -->
+<section id="icons">
+  <div class="wrap">
+    <div class="sec-head"><div class="over">05 · Icon set</div><h2>Rounded line icons, one weight</h2>
+      <p class="lede">Use <b>Phosphor Icons</b> (<code>phosphor-react-native</code>) in the Regular weight at 24px, 2px stroke and round joins, with Fill weight for selected tabs. On iOS, <code>expo-symbols</code> SF Symbols can replace the tab icons. Three custom icons cover what no set has: the verified seal, the bilum (archive) and the kundu (certificate).</p></div>
+    <div class="icons" id="icon-grid"></div>
+  </div>
+</section>
+
+<!-- NAV -->
+<section id="nav">
+  <div class="wrap">
+    <div class="sec-head"><div class="over">06 · Navigation structure</div><h2>Two modes, one app</h2>
+      <p class="lede">Everyone starts as a buyer. Artists switch into <b>Studio</b> from the profile tab or a long-press on the profile icon; the tab bar swaps and the header turns ink black so the mode is never ambiguous. Cart and QR scan live in the Home header, one tap from anywhere.</p></div>
+    <div class="grid2">
+      <div class="panel"><h3>Buyer tabs</h3>
+        <div class="demo-row" style="justify-content:space-around;margin:16px 0;color:var(--muted);font-size:12px;font-weight:700">
+          <div style="display:grid;justify-items:center;gap:4px;color:var(--red)"><svg class="i" style="width:22px;height:22px"><use href="#i-home"/></svg>Home</div>
+          <div style="display:grid;justify-items:center;gap:4px"><svg class="i" style="width:22px;height:22px"><use href="#i-search"/></svg>Explore</div>
+          <div style="display:grid;justify-items:center;gap:4px"><svg class="i" style="width:22px;height:22px"><use href="#i-heritage"/></svg>Heritage</div>
+          <div style="display:grid;justify-items:center;gap:4px"><svg class="i" style="width:22px;height:22px"><use href="#i-heart"/></svg>Wishlist</div>
+          <div style="display:grid;justify-items:center;gap:4px"><svg class="i" style="width:22px;height:22px"><use href="#i-user"/></svg>Profile</div>
+        </div>
+        <p class="muted" style="font-size:13px">Heritage gets a full tab because the archive is half of the product, not a footer link. Cart is a header icon with a red count badge, plus a floating "View cart" bar after the first add.</p></div>
+      <div class="panel" style="background:#1C1C1C;color:#F5F1EC;border-color:#1C1C1C"><h3>Studio tabs (artist mode)</h3>
+        <div class="demo-row" style="justify-content:space-around;margin:16px 0;color:#968B80;font-size:12px;font-weight:700">
+          <div style="display:grid;justify-items:center;gap:4px;color:#F4B400"><svg class="i" style="width:22px;height:22px"><use href="#i-chart"/></svg>Dashboard</div>
+          <div style="display:grid;justify-items:center;gap:4px"><svg class="i" style="width:22px;height:22px"><use href="#i-grid"/></svg>Artworks</div>
+          <div style="display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:#D62828;color:#fff"><svg class="i" style="width:22px;height:22px"><use href="#i-plus"/></svg></div>
+          <div style="display:grid;justify-items:center;gap:4px"><svg class="i" style="width:22px;height:22px"><use href="#i-box"/></svg>Orders</div>
+          <div style="display:grid;justify-items:center;gap:4px"><svg class="i" style="width:22px;height:22px"><use href="#i-wallet"/></svg>Earnings</div>
+        </div>
+        <p style="font-size:13px;color:#CBC2B8">The centre button opens Upload Artwork as a full-screen modal. Active tab is gold on ink, which signals "this is your business".</p></div>
+    </div>
+    <div class="panel" style="margin-top:20px;overflow-x:auto">
+      <h3>Information architecture</h3>
+<pre class="mermaid">
+flowchart LR
+  A[App launch] --> S{Signed in?}
+  S -- no --> AU[Auth stack<br/>Onboarding · Login · Register · Forgot]
+  S -- yes --> T[Buyer tabs]
+  AU --> T
+  T --> H[Home]
+  T --> E[Explore]
+  T --> HE[Heritage]
+  T --> W[Wishlist]
+  T --> P[Profile]
+  H --> FA[Featured artists] & FW[Featured artworks] & SC[QR scan] & C[Cart]
+  E --> CAT[Categories] --> L[Listings] --> PD[Product]
+  E --> SR[Search results] --> PD
+  PD --> AP[Artist profile] --> PF[Portfolio]
+  PD --> CE[Certificate]
+  PD --> C --> CO[Checkout] --> OC[Confirmation] --> OT[Order tracking]
+  HE --> CS[Stories] & PR[Provinces] & TE[Techniques] & ML[Materials] & HR[Resources]
+  P --> PH[Purchase history] --> OT --> RV[Review]
+  P --> ST[Settings] & NO[Notifications] & HC[Help center]
+  P -- Switch to Studio --> SD[Studio tabs]
+  SD --> DB[Sales dashboard] & MA[Manage artworks] & UP[Upload] & OR[Orders] & EA[Earnings]
+  SD --> VF[Artist verification]
+</pre>
+    </div>
+  </div>
+</section>
+
+<!-- FLOWS -->
+<section id="flows">
+  <div class="wrap">
+    <div class="sec-head"><div class="over">07 · Mobile user flows</div><h2>Three journeys the product must nail</h2></div>
+    <div class="grid2">
+      <div class="panel" style="overflow-x:auto"><h3>Buyer: discover to delivered</h3><p class="muted" style="margin-bottom:10px">Target: first purchase in under 3 minutes, guest checkout allowed.</p>
+<pre class="mermaid">
+flowchart TD
+  a[Home feed] --> b[Artwork card]
+  b --> c[Product details]
+  c -. optional .-> d[Read story / watch maker video]
+  c --> e[Add to cart]
+  e --> f[Cart: shipping estimate]
+  f --> g[Checkout 1: address]
+  g --> h[Checkout 2: shipping + export check]
+  h --> i[Checkout 3: pay]
+  i --> j[Order confirmed]
+  j --> k[Track: packed, shipped, delivered]
+  k --> l[Certificate saved to profile]
+  l --> m[Leave review]
+</pre></div>
+      <div class="panel" style="overflow-x:auto"><h3>Artist: register to first payout</h3><p class="muted" style="margin-bottom:10px">Designed for low bandwidth: drafts save offline, photos upload in the background.</p>
+<pre class="mermaid">
+flowchart TD
+  a[Register as artist] --> b[Profile: name, province, craft]
+  b --> c[Verification: ID + referee + 3 works]
+  c --> d{Review 48h}
+  d -- approved --> e[Gold verified badge]
+  d -- more info --> c
+  b --> f[Upload artwork, 4 steps]
+  f --> g[Draft visible only to artist]
+  e --> h[Listing goes live with certificate]
+  g --> h
+  h --> i[Order notification]
+  i --> j[Print label, mark shipped]
+  j --> k[Buyer confirms delivery]
+  k --> l[Payout to bank or mobile money]
+</pre></div>
+      <div class="panel" style="overflow-x:auto"><h3>Anyone: verify authenticity</h3>
+<pre class="mermaid">
+flowchart LR
+  a[Scan tag QR] --> b{Serial on ledger?}
+  b -- yes, photos match --> c[Authentic: open certificate]
+  b -- yes, already transferred --> d[Show ownership history]
+  b -- no --> e[Not recognised: report listing]
+  c --> f[Artist + story + province]
+</pre></div>
+      <div class="panel"><h3>Flow principles</h3><ul class="clean">
+        <li>Browse without an account. Ask to sign in at "Add to wishlist" or checkout, never before.</li>
+        <li>Story is one tap from every artwork, never forced before buying.</li>
+        <li>Show totals in Kina with a live USD/AUD estimate for international buyers.</li>
+        <li>Flag export permits early: listings that need a National Museum &amp; Art Gallery export permit show it on the product page, not as a surprise at payment.</li>
+        <li>Artists can do everything on a mid-range Android phone on 3G.</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- HIERARCHY -->
+<section id="hierarchy">
+  <div class="wrap">
+    <div class="sec-head"><div class="over">08 · Screen hierarchy</div><h2>All 38 screens, grouped by section</h2></div>
+<div class="tree"><b>Tumbuna Arts</b>
+├── <i>Authentication</i>            Splash → Onboarding (3) → Login · Register · Forgot password
+├── <i>Home (tab)</i>                Home dashboard
+│   ├── Featured artists        → Artist profile → Portfolio
+│   ├── Featured artworks       → Product details
+│   ├── Search                  → Search results
+│   └── Cart (header)           → Checkout → Order confirmation
+├── <i>Explore (tab)</i>             Categories → Artwork listings → Product details
+├── <i>Heritage (tab)</i>            Cultural stories
+│   ├── Province collections    (all 22, incl. NCD & Bougainville)
+│   ├── Traditional techniques  → linked artworks
+│   ├── Material library        → linked artworks
+│   └── Heritage resources
+├── <i>Wishlist (tab)</i>            Wishlist (saved artworks · followed artists)
+├── <i>Profile (tab)</i>             User account
+│   ├── Purchase history        → Order tracking → Review
+│   ├── Certificates            → Certificate viewer
+│   ├── Notifications · Settings · Help center
+│   └── Switch to Studio ↓
+├── <i>Studio (artist mode)</i>      Sales dashboard · Manage artwork · Upload artwork · Orders · Earnings
+│   └── Artist verification
+└── <i>Global</i>                    QR authenticity scanner (Home header, Profile, deep link tumbunaarts://verify/…)</div>
+  </div>
+</section>
+
+<!-- HI-FI -->
+<section id="hifi">
+  <div class="wrap">
+    <div class="sec-head"><div class="over">09 · High-fidelity screens</div><h2>The key moments, designed</h2>
+      <p class="lede">Ten screens rendered at iPhone proportions in the app's light theme. Artwork imagery is shown as generated material textures; production uses the artists' own photography.</p></div>
+    <div class="gallery" id="gallery"></div>
+  </div>
+</section>
+
+<!-- SPECS -->
+<section id="specs">
+  <div class="wrap">
+    <div class="sec-head"><div class="over">10 · Screen specifications</div><h2>Every screen: layout, components, behaviour</h2>
+      <p class="lede">Each card pairs a low-fidelity wireframe with the build spec: layout, components, UX rationale, button placement, color usage and navigation. Routes follow Expo Router's file structure.</p></div>
+    <div class="filters" id="filters" role="group" aria-label="Filter by section"></div>
+    <div id="spec-list"></div>
+  </div>
+</section>
+
+<!-- CODE -->
+<section id="code">
+  <div class="wrap">
+    <div class="sec-head"><div class="over">11 · Build handoff</div><h2>Folder structure, components and tokens</h2>
+      <p class="lede">Built on the existing Expo Router project (<code>src/app</code>). Route groups map one-to-one to the navigation modes. Tokens are already in the repo at <code>src/constants/tokens.ts</code>.</p></div>
+    <div class="grid2">
+      <div style="min-width:0"><h3 style="margin-bottom:12px">React Native screen folders</h3>
+<pre class="code"><span class="c">src/</span>
+├── app/                          <span class="c"># Expo Router: files are routes</span>
+│   ├── _layout.tsx               <span class="c"># fonts, theme, providers, splash</span>
+│   ├── index.tsx                 <span class="c"># redirect: onboarding | (tabs)</span>
+│   ├── (auth)/
+│   │   ├── _layout.tsx
+│   │   ├── onboarding.tsx
+│   │   ├── login.tsx
+│   │   ├── register.tsx
+│   │   └── forgot-password.tsx
+│   ├── (tabs)/                   <span class="c"># buyer mode</span>
+│   │   ├── _layout.tsx           <span class="c"># NativeTabs: 5 tabs</span>
+│   │   ├── home.tsx
+│   │   ├── explore.tsx           <span class="c"># categories</span>
+│   │   ├── heritage.tsx          <span class="c"># cultural stories</span>
+│   │   ├── wishlist.tsx
+│   │   └── profile.tsx
+│   ├── (studio)/                 <span class="c"># artist mode</span>
+│   │   ├── _layout.tsx           <span class="c"># ink tabs + centre FAB</span>
+│   │   ├── dashboard.tsx
+│   │   ├── artworks.tsx
+│   │   ├── upload.tsx            <span class="c"># presentation: modal</span>
+│   │   ├── orders.tsx
+│   │   ├── earnings.tsx
+│   │   └── verify.tsx
+│   ├── artworks/
+│   │   ├── index.tsx             <span class="c"># listings ?category=</span>
+│   │   └── featured.tsx
+│   ├── artwork/[id].tsx          <span class="c"># product details</span>
+│   ├── artists/featured.tsx
+│   ├── artist/[id]/
+│   │   ├── index.tsx
+│   │   └── portfolio.tsx
+│   ├── search/
+│   │   ├── index.tsx
+│   │   └── results.tsx
+│   ├── cart.tsx
+│   ├── checkout/
+│   │   ├── index.tsx             <span class="c"># 3-step stepper</span>
+│   │   └── success.tsx
+│   ├── orders/
+│   │   ├── index.tsx             <span class="c"># purchase history</span>
+│   │   ├── [id].tsx              <span class="c"># tracking</span>
+│   │   └── [id]/review.tsx
+│   ├── heritage/
+│   │   ├── story/[slug].tsx
+│   │   ├── provinces/[slug].tsx
+│   │   ├── techniques/[slug].tsx
+│   │   ├── materials/index.tsx
+│   │   └── resources.tsx
+│   ├── certificate/[serial].tsx
+│   ├── scan.tsx                  <span class="c"># QR scanner (expo-camera)</span>
+│   ├── notifications.tsx
+│   ├── settings.tsx
+│   └── help.tsx
+├── features/                     <span class="c"># domain logic + feature UI</span>
+│   ├── auth/  catalog/  cart/  checkout/  orders/
+│   ├── heritage/  studio/  verification/  profile/
+│   └── <span class="c">each: api.ts · hooks.ts · components/ · types.ts</span>
+├── components/
+│   ├── ui/                       <span class="c"># primitives (below)</span>
+│   ├── patterns/                 <span class="c"># BilumBand, TapaEmpty, WoodHeader</span>
+│   └── layout/                   <span class="c"># Screen, StickyFooter, Section</span>
+├── constants/tokens.ts           <span class="c"># design tokens</span>
+├── hooks/  use-theme.ts  use-currency.ts
+├── lib/    api-client.ts  storage.ts  format.ts
+└── store/  cart.ts  session.ts  mode.ts   <span class="c"># zustand</span></pre></div>
+      <div style="min-width:0;display:grid;gap:20px;align-content:start">
+        <div><h3 style="margin-bottom:12px">Component structure</h3>
+          <div class="tbl"><table>
+            <tr><th>Layer</th><th>Components</th></tr>
+            <tr><td><b>Primitives</b><br><span class="muted">components/ui</span></td><td><code>Text</code> (variant = typography token) · <code>Button</code> (primary, dark, outline, text; sm/md/lg) · <code>IconButton</code> · <code>Input</code> · <code>Select</code> · <code>TextArea</code> · <code>Chip</code> · <code>Badge</code> · <code>Avatar</code> · <code>Divider</code> · <code>Skeleton</code> · <code>Toggle</code> · <code>Stepper</code> · <code>ProgressBar</code></td></tr>
+            <tr><td><b>Brand patterns</b></td><td><code>BilumBand</code> · <code>VerifiedSeal</code> · <code>KunduSeal</code> · <code>WoodHeader</code> · <code>TapaEmptyState</code> · <code>Price</code> (Kina + FX estimate)</td></tr>
+            <tr><td><b>Composites</b></td><td><code>ArtworkCard</code> · <code>ArtworkGrid</code> (masonry) · <code>ArtistChip</code> · <code>ArtistCard</code> · <code>CategoryTile</code> · <code>ProvinceTile</code> · <code>StoryCard</code> · <code>ReviewItem</code> · <code>OrderRow</code> · <code>StatTile</code> · <code>MiniChart</code> · <code>MediaCarousel</code> · <code>QRCode</code></td></tr>
+            <tr><td><b>Sections</b></td><td><code>SearchBar</code> · <code>FilterSheet</code> · <code>SortSheet</code> · <code>CartBar</code> · <code>CheckoutSummary</code> · <code>PaymentMethodList</code> · <code>TrackingTimeline</code> · <code>CertificateCard</code> · <code>ScannerOverlay</code> · <code>UploadWizard</code></td></tr>
+            <tr><td><b>Layout</b></td><td><code>Screen</code> (safe area + gutter) · <code>Header</code> · <code>StickyFooter</code> · <code>Section</code> (title + "See all") · <code>BottomSheet</code></td></tr>
+          </table></div></div>
+        <div><h3 style="margin-bottom:12px">Design tokens (excerpt)</h3>
+<pre class="code"><span class="c">// src/constants/tokens.ts</span>
+<span class="k">export const</span> colors = {
+  light: {
+    background: <span class="s">'#FFFFFF'</span>, surface: <span class="s">'#FAF8F6'</span>,
+    element: <span class="s">'#F3EFEB'</span>, border: <span class="s">'#E6E0DA'</span>,
+    text: <span class="s">'#1C1C1C'</span>, textSecondary: <span class="s">'#4A433E'</span>,
+    primary: <span class="s">'#D62828'</span>, primaryPressed: <span class="s">'#A81E1E'</span>,
+    verified: <span class="s">'#F4B400'</span>, verifiedText: <span class="s">'#9A6F00'</span>,
+    heritage: <span class="s">'#8B5E3C'</span>, heritageTint: <span class="s">'#F3EAE2'</span>,
+  },
+  dark: { background: <span class="s">'#141210'</span>, primary: <span class="s">'#EF4B4B'</span>, <span class="c">/* … */</span> },
+};
+<span class="k">export const</span> space  = { xxs:4, xs:8, sm:12, md:16, xl:24, xxl:32, huge:48 };
+<span class="k">export const</span> radius = { sm:8, md:12, lg:16, xl:24, pill:999 };
+<span class="k">export const</span> typography = {
+  display: { fontFamily: <span class="s">'BricolageGrotesque_800ExtraBold'</span>, fontSize:34, lineHeight:40 },
+  body:    { fontFamily: <span class="s">'Manrope_400Regular'</span>, fontSize:16, lineHeight:24 },
+  serial:  { fontFamily: <span class="s">'IBMPlexMono_500Medium'</span>, fontSize:13, lineHeight:18 },
+};
+<span class="k">export const</span> motion = { fast:150, base:250, slow:400 };</pre></div>
+      </div>
+    </div>
+    <h3 style="margin:40px 0 12px">Core data model (SQL Server)</h3>
+    <div class="tbl"><table>
+      <tr><th>Table</th><th>Key columns</th><th>Drives</th></tr>
+      <tr><td><code>Users</code></td><td>UserId, Email, Phone (+675), Role (buyer / artist / admin), Country, PreferredCurrency</td><td>Auth, profile, currency display</td></tr>
+      <tr><td><code>Artists</code></td><td>ArtistId, UserId, DisplayName, ProvinceId, Village, CraftTypes, BioStory, VerificationStatus, VerifiedAt</td><td>Profiles, badge, verification</td></tr>
+      <tr><td><code>Artworks</code></td><td>ArtworkId, ArtistId, Title, CategoryId, ProvinceId, PriceKina, Status (draft/live/sold), Story, CulturalSignificance, Dimensions, WeightKg, ExportPermitRequired</td><td>Listings, product page</td></tr>
+      <tr><td><code>ArtworkMedia</code></td><td>MediaId, ArtworkId, BlobUrl, Type (image/video), SortOrder</td><td>Carousel (cloud storage URLs)</td></tr>
+      <tr><td><code>Provinces · Techniques · Materials</code></td><td>Slug, Name, Region, Description, HeroMediaUrl; join tables ArtworkTechniques, ArtworkMaterials</td><td>Heritage archive, filters</td></tr>
+      <tr><td><code>Stories</code></td><td>StoryId, Title, ProvinceId, Body, AudioUrl, Language, Contributor, ConsentRecorded</td><td>Cultural stories</td></tr>
+      <tr><td><code>Orders · OrderItems</code></td><td>OrderId, BuyerId, Status, ShippingMethod, TrackingNo, TotalKina, PaymentRef</td><td>Checkout, tracking, sales</td></tr>
+      <tr><td><code>Certificates</code></td><td>Serial (TA-COA-ESP-2026-004217), ArtworkId, IssuedAt, OwnerUserId, Sha256Hash, QrPayload</td><td>Certificate viewer, QR scan</td></tr>
+      <tr><td><code>Payouts · Reviews · Wishlist · Notifications</code></td><td>Standard keys plus ArtistId / BuyerId foreign keys</td><td>Earnings, reviews, saved items</td></tr>
+    </table></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">Tumbuna Arts product design specification. Artist names, prices and orders shown in mockups are sample content for illustration.</div>
+</footer>
+
+<script>
+const ic = (n, cls = 'i', style = '') => `<svg class="${cls}" style="${style}"><use href="#i-${n}"/></svg>`;
+const seal = `<svg class="i m-seal"><use href="#i-seal"/></svg>`;
+
+// QR-like pattern (deterministic) for certificate and tags
+function qr(size, seed = 7) {
+  const n = 21; let s = seed, cells = '';
+  const rnd = () => (s = (s * 9301 + 49297) % 233280) / 233280;
+  const finder = (x, y) => { for (const [fx, fy] of [[0,0],[n-7,0],[0,n-7]]) { const dx = x-fx, dy = y-fy; if (dx>=0&&dx<7&&dy>=0&&dy<7) return (dx===0||dx===6||dy===0||dy===6||(dx>=2&&dx<=4&&dy>=2&&dy<=4)) ? 1 : 0; } return -1; };
+  for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) { const f = finder(x, y); const on = f === -1 ? rnd() > .52 : f; if (on) cells += `<rect x="${x}" y="${y}" width="1" height="1"/>`; }
+  return `<svg viewBox="-1 -1 23 23" width="${size}" height="${size}" style="background:#fff;display:block" shape-rendering="crispEdges"><g fill="#1C1C1C">${cells}</g></svg>`;
+}
+
+const tabsBuyer = (on) => `<div class="m-tabs">${[['home','Home'],['search','Explore'],['heritage','Heritage'],['heart','Wishlist'],['user','Profile']].map(([i,l]) => `<div class="m-tab ${l===on?'on':''}">${ic(i)}${l}</div>`).join('')}</div>`;
+
+const phones = {
+splash: `<div class="scr" style="background:#1C1C1C;color:#fff">
+  <div class="sb">9:41</div>
+  <div style="flex:1;display:grid;place-items:center;align-content:center;gap:16px;text-align:center">
+    <svg viewBox="0 0 120 120" width="84" height="84"><use href="#logo-mark"/></svg>
+    <div class="m-h" style="font-size:26px">Tumbuna Arts</div>
+    <div style="color:#F4B400;font-weight:700;font-size:10px;letter-spacing:.12em;text-transform:uppercase">Buy · Discover · Preserve</div>
+  </div>
+  <div style="text-align:center;color:#968B80;font-size:9px;padding-bottom:14px">Art of Papua New Guinea's 22 provinces</div>
+  <div class="bilum"></div></div>`,
+
+onboarding: `<div class="scr">
+  <div class="art art-bilum" style="height:52%;position:relative"><div class="sb" style="color:#1C1C1C"></div><div style="position:absolute;top:30px;right:14px;background:rgba(255,255,255,.9);border-radius:999px;padding:3px 10px;font-weight:800;font-size:9px">Skip</div></div>
+  <div class="m-pad" style="display:grid;gap:10px;padding-top:16px;flex:1;align-content:start">
+    <div class="m-row" style="gap:4px"><i style="width:18px;height:5px;border-radius:3px;background:#D62828"></i><i style="width:5px;height:5px;border-radius:3px;background:#E6E0DA"></i><i style="width:5px;height:5px;border-radius:3px;background:#E6E0DA"></i></div>
+    <div class="over" style="font-size:8px">2 of 3 · Heritage</div>
+    <div class="m-h" style="font-size:21px;line-height:1.1">Every piece carries a story</div>
+    <div style="color:#4A433E;font-size:10.5px">Learn who made it, where it comes from and what its patterns mean, before it reaches your home.</div>
+  </div>
+  <div class="m-pad" style="display:grid;gap:8px;padding-bottom:22px"><div class="m-btn">Next</div><div style="text-align:center;font-weight:800;font-size:10px">I'm an artist · <span style="color:#D62828">Sell with us</span></div></div></div>`,
+
+home: `<div class="scr">
+  <div class="sb">9:41</div>
+  <div class="m-pad m-row" style="padding-top:2px"><div><div class="m-sub">Moning,</div><div class="m-h" style="font-size:17px">Kila</div></div><div class="m-sp"></div>${ic('scan')}${ic('bell')}<div style="position:relative">${ic('bag')}<span style="position:absolute;top:-4px;right:-5px;background:#D62828;color:#fff;border-radius:999px;font-size:7px;font-weight:800;padding:0 4px">2</span></div></div>
+  <div class="m-pad" style="margin-top:10px"><div class="m-row" style="background:#F3EFEB;border-radius:999px;padding:8px 12px;color:#8A8078">${ic('search','i','width:13px;height:13px')}Carvings, bilums, artists…</div></div>
+  <div class="m-pad m-row" style="margin-top:10px;gap:6px;overflow:hidden"><span class="m-chip on">For you</span><span class="m-chip">Carvings</span><span class="m-chip">Bilums</span><span class="m-chip">Tapa</span><span class="m-chip">Baskets</span></div>
+  <div class="m-pad" style="margin-top:10px"><div class="art art-carve" style="border-radius:16px;height:118px;position:relative;overflow:hidden">
+    <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(28,28,28,.85),transparent 60%)"></div>
+    <div style="position:absolute;left:12px;bottom:10px;right:12px;color:#fff"><div style="color:#F4B400;font-weight:800;font-size:8px;letter-spacing:.12em">HERITAGE WEEK · EAST SEPIK</div><div class="m-h" style="font-size:15px;line-height:1.1;margin-top:2px">Storyboards of the Sepik River</div></div></div></div>
+  <div class="m-pad m-row" style="margin-top:12px"><div class="m-h" style="font-size:13px">Featured artists</div><div class="m-sp"></div><span style="color:#D62828;font-weight:800;font-size:9px">See all</span></div>
+  <div class="m-pad m-row" style="margin-top:6px;gap:10px">${['carve','bilum','tapa','mask','basket'].map((a,i)=>`<div style="display:grid;justify-items:center;gap:3px"><div class="art art-${a}" style="width:38px;height:38px;border-radius:50%;border:2px solid ${i<3?'#F4B400':'#E6E0DA'}"></div><span style="font-size:8px;font-weight:700">${['Joseph','Mary','Ruth','Peni','Lucy'][i]}</span></div>`).join('')}</div>
+  <div class="m-pad m-row" style="margin-top:10px"><div class="m-h" style="font-size:13px">Featured artworks</div></div>
+  <div class="m-pad" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px">
+    <div><div class="art art-bilum" style="height:62px;border-radius:10px"></div><div style="font-weight:700;margin-top:4px">Wool bilum</div><div class="m-price">K 180</div></div>
+    <div><div class="art art-mask" style="height:62px;border-radius:10px"></div><div style="font-weight:700;margin-top:4px">Spirit mask</div><div class="m-price">K 640</div></div></div>
+  ${tabsBuyer('Home')}</div>`,
+
+product: `<div class="scr">
+  <div class="art art-carve" style="height:44%;position:relative">
+    <div class="sb" style="color:#fff"></div>
+    <div class="m-row" style="position:absolute;top:30px;left:12px;right:12px">${['back'].map(i=>`<span style="width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.92);display:grid;place-items:center">${ic(i,'i','width:14px;height:14px')}</span>`).join('')}<div class="m-sp"></div><span style="width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.92);display:grid;place-items:center">${ic('share','i','width:13px;height:13px')}</span><span style="width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.92);display:grid;place-items:center;color:#D62828">${ic('heart','i','width:14px;height:14px;fill:#D62828')}</span></div>
+    <div style="position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:4px">${[1,0,0,0].map(o=>`<i style="width:${o?14:5}px;height:5px;border-radius:3px;background:${o?'#fff':'rgba(255,255,255,.55)'}"></i>`).join('')}</div>
+    <div style="position:absolute;bottom:10px;right:12px;background:rgba(28,28,28,.75);color:#fff;font-size:8px;font-weight:700;padding:3px 8px;border-radius:999px">${ic('play','i','width:9px;height:9px;fill:#fff')} Maker video</div></div>
+  <div class="m-pad" style="padding-top:10px;display:grid;gap:6px">
+    <div class="m-row" style="gap:5px"><span class="m-chip" style="background:#F3EAE2;color:#8B5E3C">East Sepik</span><span class="m-chip" style="background:#FCE9E9;color:#A81E1E">One of a kind</span></div>
+    <div class="m-h" style="font-size:16px;line-height:1.15">Crocodile spirit storyboard</div>
+    <div class="m-row" style="gap:6px"><div class="art art-mask" style="width:20px;height:20px;border-radius:50%"></div><b>Joseph Kaman</b>${seal}<span class="m-sub">· Kambot village</span></div>
+    <div class="m-row"><span class="m-price" style="font-size:18px">K 1,250</span><span class="m-sub">≈ US$ 310</span><div class="m-sp"></div><span style="color:#9A6F00;font-weight:800">${ic('star','i','width:11px;height:11px;fill:#F4B400;stroke:#F4B400')} 4.9</span></div>
+    <div class="m-row" style="border-bottom:1px solid #E6E0DA;gap:14px;font-weight:800;font-size:10px;margin-top:2px"><span style="border-bottom:2px solid #D62828;padding-bottom:5px">Story</span><span class="m-sub" style="padding-bottom:5px;font-size:10px">Details</span><span class="m-sub" style="padding-bottom:5px;font-size:10px">Shipping</span></div>
+    <div style="color:#4A433E">Carved in relief on a single plank, the board tells how the crocodile ancestor shaped the Keram River. Joseph learned the panel style from his grandfather…</div>
+    <div class="m-row" style="background:#FFF6DB;border-radius:10px;padding:7px 9px;gap:6px"><svg class="i" style="color:#F4B400;width:14px;height:14px"><use href="#i-seal"/></svg><span style="font-weight:700;font-size:9px">Certificate of Authenticity included</span></div>
+  </div>
+  <div style="margin-top:auto;border-top:1px solid #E6E0DA;padding:10px 14px 16px;display:flex;gap:8px;background:#fff;box-shadow:0 -6px 16px rgba(59,42,28,.08)"><div class="m-btn ghost" style="padding:10px 12px">${ic('heart','i','width:14px;height:14px')}</div><div class="m-btn" style="flex:1">Add to cart</div></div></div>`,
+
+checkout: `<div class="scr">
+  <div class="sb">9:41</div>
+  <div class="m-pad m-row">${ic('back')}<div class="m-sp"></div><div class="m-h" style="font-size:14px">Checkout</div><div class="m-sp"></div><span style="width:16px"></span></div>
+  <div class="m-pad m-row" style="margin-top:12px;gap:4px;font-size:8px;font-weight:800">
+    ${[['Address',1],['Shipping',1],['Payment',2]].map(([l,s],i)=>`<div style="display:grid;justify-items:center;gap:3px;flex:1"><span style="width:18px;height:18px;border-radius:50%;display:grid;place-items:center;background:${s===1?'#2E7D4F':'#D62828'};color:#fff">${s===1?ic('check','i','width:10px;height:10px'):'3'}</span>${l}</div>${i<2?'<div style="flex:1;height:2px;background:#2E7D4F;margin-bottom:10px"></div>':''}`).join('')}</div>
+  <div class="m-pad" style="margin-top:12px;display:grid;gap:7px">
+    <div class="m-h" style="font-size:13px">Pay with</div>
+    ${[['Card','Visa · Mastercard · Apple Pay',1],['Mobile money','Pay from your PNG wallet',0],['Bank transfer','BSP, Kina Bank, Westpac PNG',0]].map(([t,d,on])=>`<div class="m-row" style="border:1.5px solid ${on?'#D62828':'#E6E0DA'};border-radius:12px;padding:9px 10px;background:${on?'#FFF8F8':'#fff'}"><span style="width:14px;height:14px;border-radius:50%;border:${on?'4.5px solid #D62828':'1.5px solid #CFC6BD'}"></span><div><b>${t}</b><div class="m-sub">${d}</div></div></div>`).join('')}
+    <div style="background:#FAF8F6;border-radius:12px;padding:10px;display:grid;gap:4px;margin-top:4px">
+      <div class="m-row"><span>Crocodile spirit storyboard</span><div class="m-sp"></div>K 1,250.00</div>
+      <div class="m-row"><span>DHL Express to Brisbane</span><div class="m-sp"></div>K 165.00</div>
+      <div class="m-row"><span>Export permit (NMAG)</span><div class="m-sp"></div>K 30.00</div>
+      <div class="m-row" style="border-top:1px solid #E6E0DA;padding-top:5px;font-weight:800"><span>Total</span><div class="m-sp"></div><span class="m-price" style="font-size:13px">K 1,445.00</span></div>
+      <div class="m-sub" style="text-align:right">≈ AU$ 545 · charged in PGK</div></div></div>
+  <div style="margin-top:auto;padding:10px 14px 18px"><div class="m-btn">Pay K 1,445.00</div><div class="m-sub" style="text-align:center;margin-top:6px">Payment held until delivery is confirmed</div></div></div>`,
+
+story: `<div class="scr">
+  <div class="art art-tapa" style="height:36%;position:relative">
+    <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(94,61,36,.95),rgba(94,61,36,.2))"></div>
+    <div class="sb" style="color:#fff;position:relative"></div>
+    <div style="position:absolute;left:14px;right:14px;bottom:12px;color:#fff"><div style="color:#F4B400;font-weight:800;font-size:8px;letter-spacing:.12em">ORO PROVINCE · TAPA</div><div class="m-h" style="font-size:19px;line-height:1.05;margin-top:3px">Barkcloth that maps the land</div><div style="font-size:9px;opacity:.85;margin-top:4px">6 min read · told by Ruth, Ömie elder</div></div></div>
+  <div class="m-pad" style="padding-top:10px;display:grid;gap:9px">
+    <div class="m-row" style="background:#F3EAE2;border-radius:999px;padding:6px 6px 6px 10px;color:#5E3D24;font-weight:700"><span>Listen in Tok Pisin or English</span><div class="m-sp"></div><span style="width:24px;height:24px;border-radius:50%;background:#8B5E3C;color:#fff;display:grid;place-items:center">${ic('play','i','width:10px;height:10px;fill:#fff')}</span></div>
+    <div style="display:grid;gap:8px;border-left:2px dashed #CFC6BD;padding-left:12px;margin-left:4px">
+      ${[['1','The tree','Paper mulberry inner bark is stripped and soaked in the river.'],['2','The beating','Women beat the bark flat with grooved wooden mallets.'],['3','The designs','Patterns record mountains, rivers and clan totems in natural dyes.']].map(([n,t,d])=>`<div style="position:relative"><span style="position:absolute;left:-19px;top:1px;width:12px;height:12px;border-radius:50%;background:#8B5E3C;color:#fff;font-size:7px;font-weight:800;display:grid;place-items:center">${n}</span><b style="color:#5E3D24">${t}</b><div style="color:#4A433E">${d}</div></div>`).join('')}</div>
+    <div class="m-row" style="background:#fff;border:1px solid #E6E0DA;border-radius:12px;padding:8px;gap:8px"><div class="art art-tapa" style="width:38px;height:38px;border-radius:8px"></div><div><b>Shop tapa from Oro</b><div class="m-sub">14 works · 6 verified artists</div></div><div class="m-sp"></div>${ic('chev','i','width:13px;height:13px')}</div></div>
+  ${tabsBuyer('Heritage')}</div>`,
+
+studio: `<div class="scr" style="background:#FAF8F6">
+  <div style="background:#1C1C1C;color:#fff;padding-bottom:40px">
+    <div class="sb">9:41</div>
+    <div class="m-pad m-row"><div><div style="color:#F4B400;font-weight:800;font-size:8px;letter-spacing:.12em">STUDIO</div><div class="m-h" style="font-size:17px">Joseph Kaman ${seal}</div></div><div class="m-sp"></div><span style="border:1px solid #4A433E;border-radius:999px;padding:4px 9px;font-size:8px;font-weight:800">Buyer mode</span></div></div>
+  <div class="m-pad" style="margin-top:-30px;display:grid;gap:8px">
+    <div style="background:#fff;border-radius:16px;padding:12px;box-shadow:0 6px 16px rgba(59,42,28,.12)">
+      <div class="m-sub">Earnings · November</div>
+      <div class="m-row"><span class="m-price" style="font-size:22px">K 4,820</span><span style="color:#2E7D4F;font-weight:800;font-size:9px;margin-left:6px">▲ 18%</span></div>
+      <div style="display:flex;align-items:flex-end;gap:5px;height:48px;margin-top:8px">${[30,45,25,60,52,80,64].map((h,i)=>`<div style="flex:1;height:${h}%;border-radius:3px;background:${i===5?'#D62828':'#F3EFEB'}"></div>`).join('')}</div>
+      <div class="m-row m-sub" style="justify-content:space-between;margin-top:3px"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">${[['12','Orders'],['2.3k','Views'],['4.9','Rating']].map(([v,l])=>`<div style="background:#fff;border-radius:12px;padding:8px"><div class="m-price" style="font-size:14px">${v}</div><div class="m-sub">${l}</div></div>`).join('')}</div>
+    <div class="m-row"><div class="m-h" style="font-size:12px">To ship</div><div class="m-sp"></div><span style="color:#D62828;font-weight:800;font-size:9px">All orders</span></div>
+    ${[['carve','Crocodile storyboard','Brisbane, AU','Ship by Fri','#FCE9E9','#A81E1E'],['mask','Ancestor mask','Lae, PNG','Packed','#FFF6DB','#7a5800']].map(([a,t,c,s,bg,fg])=>`<div class="m-row" style="background:#fff;border-radius:12px;padding:7px;gap:8px"><div class="art art-${a}" style="width:30px;height:30px;border-radius:7px"></div><div><b>${t}</b><div class="m-sub">${c}</div></div><div class="m-sp"></div><span class="m-chip" style="background:${bg};color:${fg}">${s}</span></div>`).join('')}</div>
+  <div class="m-tabs" style="background:#1C1C1C;border-color:#1C1C1C">${[['chart','Dashboard',1],['grid','Artworks'],['plus',''],['box','Orders'],['wallet','Earnings']].map(([i,l,on])=> i==='plus' ? `<span style="width:32px;height:32px;border-radius:50%;background:#D62828;color:#fff;display:grid;place-items:center;margin-top:-4px">${ic('plus')}</span>` : `<div class="m-tab" style="color:${on?'#F4B400':'#968B80'}">${ic(i)}${l}</div>`).join('')}</div></div>`,
+
+upload: `<div class="scr">
+  <div class="sb">9:41</div>
+  <div class="m-pad m-row"><span style="font-weight:800;font-size:10px">Cancel</span><div class="m-sp"></div><div class="m-h" style="font-size:13px">New artwork</div><div class="m-sp"></div><span style="color:#8A8078;font-weight:800;font-size:10px">2 / 4</span></div>
+  <div class="m-pad" style="margin-top:8px"><div style="height:4px;background:#F3EFEB;border-radius:2px"><div style="width:50%;height:100%;background:#D62828;border-radius:2px"></div></div></div>
+  <div class="m-pad" style="margin-top:12px;display:grid;gap:9px">
+    <div class="m-h" style="font-size:16px">Photos &amp; details</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px">${['basket','basket','shell'].map((a,i)=>`<div class="art art-${a}" style="aspect-ratio:1;border-radius:8px;position:relative">${i===0?'<span style="position:absolute;left:3px;bottom:3px;background:#1C1C1C;color:#fff;font-size:6.5px;font-weight:800;padding:1px 4px;border-radius:3px">COVER</span>':''}</div>`).join('')}<div style="aspect-ratio:1;border-radius:8px;border:1.5px dashed #CFC6BD;display:grid;place-items:center;color:#8A8078">${ic('camera')}</div></div>
+    <div class="m-sub">Add front, back, a close-up and one photo in your hands for scale.</div>
+    ${[['Title','Buka coil basket with lid'],['Category','Baskets & weaving ▾'],['Province','Autonomous Region of Bougainville ▾']].map(([l,v])=>`<div><div style="font-weight:800;font-size:9px;margin-bottom:3px">${l}</div><div style="border:1.5px solid #E6E0DA;border-radius:10px;padding:7px 9px">${v}</div></div>`).join('')}
+    <div><div style="font-weight:800;font-size:9px;margin-bottom:4px">Materials</div><div class="m-row" style="gap:4px;flex-wrap:wrap"><span class="m-chip on">Bush vine</span><span class="m-chip on">Pandanus</span><span class="m-chip">+ Add</span></div></div>
+    <div class="m-row" style="background:#F3EAE2;border-radius:12px;padding:8px 10px;gap:8px;color:#5E3D24"><span style="width:26px;height:26px;border-radius:50%;background:#8B5E3C;color:#fff;display:grid;place-items:center">${ic('mic','i','width:13px;height:13px')}</span><div><b>Record the story</b><div style="font-size:8.5px">Speak in any language; we transcribe it</div></div></div></div>
+  <div style="margin-top:auto;padding:10px 14px 18px;display:flex;gap:8px"><div class="m-btn ghost" style="flex:1">Save draft</div><div class="m-btn" style="flex:1.4">Continue</div></div></div>`,
+
+cert: `<div class="scr" style="background:#F3EFEB">
+  <div class="sb">9:41</div>
+  <div class="m-pad m-row">${ic('back')}<div class="m-sp"></div><div class="m-h" style="font-size:13px">Certificate</div><div class="m-sp"></div>${ic('share')}</div>
+  <div class="m-pad" style="margin-top:10px"><div style="background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 12px 28px rgba(59,42,28,.18)">
+    <div class="bilum" style="height:8px"></div>
+    <div style="padding:14px;display:grid;gap:8px;justify-items:center;text-align:center">
+      <svg viewBox="0 0 120 120" width="52" height="52"><circle cx="60" cy="60" r="57" fill="#F4B400"/><circle cx="60" cy="60" r="35" fill="#FFF6DB" stroke="#1C1C1C" stroke-width="2"/><path d="M48 40h24l-7 20 7 20H48l7-20z" fill="#1C1C1C"/><path d="M52 47h16M52 73h16" stroke="#D62828" stroke-width="3"/></svg>
+      <div style="font-weight:800;font-size:8px;letter-spacing:.14em;color:#9A6F00">CERTIFICATE OF AUTHENTICITY</div>
+      <div class="m-h" style="font-size:15px;line-height:1.1">Crocodile spirit storyboard</div>
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:3px 10px;text-align:left;width:100%;font-size:9px;border-top:1px solid #E6E0DA;padding-top:8px">
+        <span class="m-sub">Artist</span><b>Joseph Kaman ${seal}</b>
+        <span class="m-sub">Origin</span><b>Kambot, East Sepik</b>
+        <span class="m-sub">Material</span><b>Hardwood, natural pigment</b>
+        <span class="m-sub">Issued</span><b>3 Nov 2026</b>
+        <span class="m-sub">Owner</span><b>Kila M.</b></div>
+      <div class="m-row" style="width:100%;gap:10px;border-top:1px solid #E6E0DA;padding-top:8px;text-align:left"><div class="qr-slot" data-size="54" data-seed="11"></div><div style="display:grid;gap:3px"><span class="m-sub">Serial</span><span style="font-family:var(--f-mono);font-size:8.5px;font-weight:500">TA-COA-ESP-2026-004217</span><span style="color:#2E7D4F;font-weight:800;font-size:8.5px">${ic('check','i','width:10px;height:10px')} Verified on Tumbuna registry</span></div></div></div></div></div>
+  <div style="margin-top:auto;padding:10px 14px 18px;display:flex;gap:8px"><div class="m-btn ghost" style="flex:1;background:#fff">Download PDF</div><div class="m-btn" style="flex:1;background:#1C1C1C">Transfer owner</div></div></div>`,
+
+scan: `<div class="scr" style="background:radial-gradient(ellipse at 50% 35%,#5a4636,#1a1410 70%);color:#fff">
+  <div class="sb">9:41</div>
+  <div class="m-pad m-row"><span style="width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.15);display:grid;place-items:center">${ic('back','i','width:14px;height:14px')}</span><div class="m-sp"></div><b>Verify artwork</b><div class="m-sp"></div><span style="width:28px"></span></div>
+  <div style="position:relative;width:150px;height:150px;margin:34px auto 0">
+    ${['top:0;left:0;border-width:3px 0 0 3px','top:0;right:0;border-width:3px 3px 0 0','bottom:0;left:0;border-width:0 0 3px 3px','bottom:0;right:0;border-width:0 3px 3px 0'].map(p=>`<i style="position:absolute;${p};width:28px;height:28px;border-style:solid;border-color:#F4B400;border-radius:4px"></i>`).join('')}
+    <div style="position:absolute;inset:22px;opacity:.85" class="qr-slot" data-size="106" data-seed="3"></div>
+    <i style="position:absolute;left:10px;right:10px;height:2px;background:#D62828;box-shadow:0 0 10px #D62828;animation:scan 2.4s ease-in-out infinite"></i></div>
+  <div style="text-align:center;margin-top:16px;font-size:10px;opacity:.85">Point at the Tumbuna tag on the artwork</div>
+  <div style="margin-top:auto;background:#fff;color:#1C1C1C;border-radius:20px 20px 0 0;padding:12px 14px 18px;display:grid;gap:8px">
+    <div style="width:30px;height:4px;border-radius:2px;background:#E6E0DA;justify-self:center"></div>
+    <div class="m-row" style="gap:8px"><span style="width:30px;height:30px;border-radius:50%;background:#E3F2E9;color:#2E7D4F;display:grid;place-items:center">${ic('check')}</span><div><div class="m-h" style="font-size:14px">Authentic</div><div class="m-sub">Matches certificate TA-COA-ESP-2026-004217</div></div></div>
+    <div class="m-btn">View certificate</div></div></div>`
+};
+
+const shots = [
+  ['splash','Splash','Night Ink background, Bilum T mark scales in over 400ms, bilum band along the bottom. Holds while fonts and session load (≤ 1.5s).'],
+  ['onboarding','Onboarding','Three full-bleed panels: Marketplace, Heritage, Authenticity. Pill progress indicator, Skip top-right, one red Next in the thumb zone. Artists branch off from the secondary link.'],
+  ['home','Home dashboard','Greeting in Tok Pisin, scan / notifications / cart in the header. Search pill, category chips, a heritage hero, a gold-ringed row of verified artists, then the artwork grid.'],
+  ['product','Product details','Edge-to-edge carousel with maker video. Province and rarity chips, artist row with seal, Kina price with FX estimate. Story is the default tab. Sticky add-to-cart bar.'],
+  ['checkout','Checkout · payment','Three-step stepper with completed steps in rainforest green. Radio cards for card, mobile money and bank transfer. Itemised summary including export permit. Escrow reassurance under the pay button.'],
+  ['story','Cultural story','Kwila-brown header over tapa texture. Narrated audio in two languages. Chapters on a dashed "story thread". Ends with a soft link to shop that province.'],
+  ['studio','Studio dashboard','Ink header signals artist mode. Floating earnings card with weekly bars, three KPI tiles, and a to-ship queue with status chips. Centre red + uploads.'],
+  ['upload','Upload artwork','Four-step wizard: Photos & details, Story, Price & shipping, Preview. Photo coaching inline. Voice-recorded story for artists who prefer speaking to typing.'],
+  ['cert','Certificate viewer','Printable certificate card with bilum band, Kundu seal, provenance table, QR and Plex Mono serial. Owner can download a PDF or transfer ownership on resale.'],
+  ['scan','QR authenticity scanner','Camera viewfinder with gold corners and a red sweep line. A result sheet slides up within a second: Authentic, Transferred, or Not recognised.'],
+];
+
+document.getElementById('hero-phones').innerHTML = ['onboarding','home'].map(k => `<div class="phone">${phones[k]}</div>`).join('');
+document.getElementById('gallery').innerHTML = shots.map(([k,t,d]) => `<figure class="shot"><div class="phone">${phones[k]}</div><figcaption><b>${t}</b>${d}</figcaption></figure>`).join('');
+document.querySelectorAll('.qr-slot').forEach(el => el.innerHTML = qr(+el.dataset.size, +el.dataset.seed));
+
+// icons
+const iconList = [['home','Home'],['search','Explore'],['heritage','Heritage'],['heart','Wishlist'],['user','Profile'],['bag','Cart'],['bell','Notifications'],['scan','Scan QR'],['seal','Verified'],['cert','Certificate'],['star','Rating'],['pin','Province'],['leaf','Material'],['box','Orders'],['truck','Shipping'],['wallet','Earnings'],['chart','Sales'],['plus','Upload'],['camera','Photo'],['mic','Record story'],['play','Video'],['filter','Filter'],['sliders','Settings'],['share','Share'],['globe','Language'],['help','Help']];
+document.getElementById('icon-grid').innerHTML = iconList.map(([n,l]) => `<div>${ic(n,'i', n==='seal'?'color:#F4B400':'')}${l}</div>`).join('');
+
+// screen specs: [section, name, route, wireframe blocks, layout, components, ux, buttons, color, nav]
+const S = [
+['Authentication','Splash Screen','app/index.tsx','st lg fl bl',
+ 'Full-screen Night Ink. Centered Bilum T mark (84pt) above the wordmark and "Buy · Discover · Preserve" overline in gold. 10pt bilum band pinned to the bottom edge.',
+ 'BilumBand, LogoMark (animated), Text overline. Native splash via expo-splash-screen with the same ink background so there is no flash.',
+ 'Covers font loading, session restore and remote config. A brand moment rather than a spinner. Never longer than 1.5s; no tap required.',
+ 'None.','Ink background, white wordmark, gold overline, bilum band in red/gold/ink.',
+ 'Auto-routes: first launch → Onboarding; signed out → Home as guest; signed in → last mode (buyer tabs or Studio). Fade transition 250ms.'],
+['Authentication','Onboarding','app/(auth)/onboarding.tsx','im dt ti tx fl bt b2',
+ 'Three swipeable pages. Top 52% is a full-bleed artwork photo; below it a progress pill, overline, display headline (2 lines), one-sentence body. Skip floats top-right over the image.',
+ 'PagerView, ProgressPill, Text (overline, display, body), Button primary, Button text.',
+ 'Teaches the three promises in order: shop authentic art, learn its story, verify it. Short copy so it works for second-language English readers. Shown once.',
+ 'Next (primary, full width, bottom). Last page: "Start exploring". Secondary "I\'m an artist · Sell with us" under it. Skip top-right.',
+ 'White page, red primary and active pill, earth-brown overline.',
+ 'Skip or finish → Home as guest. "Sell with us" → Register with role preset to Artist. Swipe or button advances.'],
+['Authentication','Login','app/(auth)/login.tsx','st hd ti tx in in bt tx b2 b2',
+ 'Back chevron, small logo, "Welcome back" H1, then email/phone field, password field with show toggle, "Forgot password?" right-aligned. Divider "or", then Google and Apple buttons.',
+ 'Header, Input (email/phone, password), Button primary, Button outline with provider icons, Text link.',
+ 'One field accepts email or a PNG mobile number (+675) because many artists do not use email. Inline validation on blur; error copy says how to fix.',
+ 'Log in (primary) below the fields, full width. Social sign-in outlined beneath. "New here? Create account" pinned at the bottom.',
+ 'White, ink text, red primary and focus ring, red link text.',
+ 'Success → returns to the screen that requested login (deep-link aware), else Home. Back → previous screen or Onboarding.'],
+['Authentication','Register','app/(auth)/register.tsx','st hd ti sg ins in bt tx',
+ 'Segmented control "I want to buy / I want to sell". Fields: full name, email or phone, password with strength meter, country (buyers) or province + craft (artists). Terms checkbox.',
+ 'SegmentedControl, Input, Select (country/province), ChipGroup (craft types), Checkbox, Button primary.',
+ 'One form for both roles keeps the code and the mental model simple; artist-only fields appear when "sell" is selected. Phone sign-up sends a 6-digit SMS code.',
+ 'Create account (primary, bottom, sticky above keyboard). "Already have an account? Log in" below.',
+ 'Selected segment ink with white text; craft chips sand, selected chips ink.',
+ 'Buyer → Home. Artist → Studio dashboard with a "Get verified" banner. OTP step slides in as a second screen.'],
+['Authentication','Forgot Password','app/(auth)/forgot-password.tsx','st hd ti tx in bt fl',
+ 'Back chevron, H1 "Reset your password", one-line helper, single email/phone input. After sending: confirmation state with tapa illustration and a 60s resend timer.',
+ 'Header, Input, Button primary, TapaEmptyState (success), CountdownText.',
+ 'Single task, single field. Success state confirms where the code went ("We sent a code to +675 7••• ••42").',
+ 'Send reset code (primary). Then "Resend code" text button once the timer ends.',
+ 'White, red primary, rainforest-green check on success.',
+ 'Code entry → New password → Login with a toast "Password updated". Back returns to Login.'],
+
+['Home','Home Dashboard','app/(tabs)/home.tsx','st hd sr ch hr ti av ti gr tb',
+ 'Header: greeting + first name, scan, bell, cart with badge. Search pill. Category chips. Heritage hero card (16:9). Featured artists row (avatars with gold ring if verified). Featured artworks 2-column grid. "Explore by province" tiles. Recently viewed.',
+ 'Header, SearchBar (tap-to-open), ChipRow, HeroCard, ArtistAvatarRow, ArtworkGrid, ProvinceTile, Section, TabBar.',
+ 'Mixes commerce and culture on purpose: the hero rotates between campaigns and stories. Personalised once the user has views or wishlist items. Pull to refresh.',
+ 'No primary button; cards are the actions. "See all" text links right-aligned on section titles. Cart icon top-right.',
+ 'White canvas, ink type, red only on badges and "See all", gold rings on verified artists, hero uses a dark gradient scrim.',
+ 'Tab root. Search pill → Search (shared-element). Cards → Product / Artist. Scan → QR scanner. Cart → Cart.'],
+['Home','Featured Artists','app/artists/featured.tsx','st hd ch ls ls ls',
+ 'Large title, filter chips by craft (Carvers, Weavers, Bilum, Painters, Pottery). Vertical list of ArtistCards: cover image strip of 3 works, avatar overlapping, name + seal, province, craft, follower count, Follow button.',
+ 'Header (large title), ChipRow, ArtistCard, Button small outline, VerifiedSeal.',
+ 'Puts the person first; buyers often return for a maker, not an object. Three works per card show style at a glance.',
+ 'Follow (small outline, right of the name). Card tap opens the profile.',
+ 'White cards on sand50 background, gold seals, ink Follow outline turning red when followed.',
+ 'Push from Home "See all". Card → Artist profile. Back → Home.'],
+['Home','Featured Artworks','app/artworks/featured.tsx','st hd ch gr gr',
+ 'Curated grid with an editor\'s note at the top ("This month: Highlands bilums"). 2-column masonry grid of ArtworkCards. Sort and filter in a sticky pill bar.',
+ 'Header, EditorialNote, StickyFilterBar, ArtworkGrid (FlashList masonry), ArtworkCard.',
+ 'Curation builds trust with international collectors who do not know where to start. Masonry keeps tall carvings and wide paintings in proportion.',
+ 'Filter and Sort pills sticky under the header. Heart on each card.',
+ 'Editor\'s note on earth tint, cards white, prices in ink, "One of a kind" chip in red tint.',
+ 'Push from Home. Card → Product details with shared-element image.'],
+['Home','Categories','app/(tabs)/explore.tsx','st hd sr gr gr tb',
+ 'Search pill at top, then a 2-column grid of large CategoryTiles with photography: Wood carvings, Bilums, Tapa cloth, Baskets & weaving, Paintings, Masks, Pottery, Shell & bead jewellery, Musical instruments (kundu, garamut), Sculpture. Below: "Shop by province" horizontal map chips.',
+ 'SearchBar, CategoryTile (image, label, count), ProvinceChip row, TabBar.',
+ 'Visual tiles beat a text list for an audience unfamiliar with PNG craft names. Counts show depth of inventory.',
+ 'Tiles are the actions. No primary button.',
+ 'Tiles use photography with ink scrim and white labels; province chips sand with brown pin icons.',
+ 'Explore tab root. Tile → Artwork listings filtered. Province chip → Province collection (Heritage).'],
+['Home','Search','app/search/index.tsx','st sr ch ls ti rw',
+ 'Auto-focused search field with cancel. Below: recent searches (removable), trending chips ("Sepik mask", "Bilum bag", "Trobriand carving"), suggested artists, and a scope toggle Artworks / Artists / Stories.',
+ 'SearchInput, ScopeTabs, RecentList, ChipRow, ArtistChip, Typeahead list.',
+ 'Typeahead groups results by type so "Goroka" can match an artist, a province and a story. Handles misspellings of place names.',
+ 'Cancel text button right of the field. Keyboard "Search" submits.',
+ 'White; trending chips sand; match highlight in bold ink.',
+ 'Modal-style push from any search pill. Submit → Search results. Cancel → back.'],
+
+['Marketplace','Artwork Listings','app/artworks/index.tsx','st hd ch gr gr',
+ 'Category title + count. Sticky bar: Filter, Sort, and quick chips (Under K200, Verified only, Ships internationally). 2-column grid. Floating "View cart" bar appears after an add.',
+ 'Header, StickyFilterBar, FilterSheet (price, province, material, technique, size, artist verified), SortSheet, ArtworkGrid, CartBar.',
+ 'Filters reflect the archive taxonomy, so material and technique are first-class, which no generic marketplace offers. Infinite scroll with skeleton cards.',
+ 'Filter / Sort pills sticky top. CartBar bottom with "View cart · 2 items".',
+ 'White grid, active filter count in a red dot, verified quick chip uses gold seal.',
+ 'Push from Categories. Card → Product. Filter opens a bottom sheet.'],
+['Marketplace','Search Results','app/search/results.tsx','st sr ch ti gr',
+ 'Query in the field, scope tabs (Artworks 124 · Artists 9 · Stories 6), active filter chips, results grid. "Did you mean Sepik?" for typos. Empty state suggests related categories.',
+ 'SearchInput, ScopeTabs, ActiveFilterChips, ArtworkGrid, ArtistCard, StoryCard, TapaEmptyState.',
+ 'Keeps all three content types reachable without new searches. Stories in results lead buyers into the archive naturally.',
+ 'Filter pill top-right of results. Clear-all text button in the chip row.',
+ 'Selected scope underline red; story results carry a brown Heritage badge.',
+ 'Back returns to Search with query kept. Result taps push detail screens.'],
+['Marketplace','Product Details','app/artwork/[id].tsx','im ch ti tx sg tx ct',
+ 'Carousel (4:5, swipe, pinch zoom, maker video). Chips: province, rarity. Title, artist row with seal, price with FX, rating. Tabs: Story · Details (materials, technique, dimensions, weight, care) · Shipping (origin town, carriers, ETA, export permit). Certificate banner. Reviews. "More from this artist" and "From the same province".',
+ 'MediaCarousel, Chip, ArtistChip, Price, Rating, Tabs, CertificateBanner, ReviewItem, ArtworkRow, StickyFooter.',
+ 'Story first because it is the reason to pay a premium. All buying facts (size, shipping, permit) on one screen so international buyers do not hesitate.',
+ 'Sticky bottom bar: wishlist heart (outline, square) + "Add to cart" (primary, flex). If already in cart: "Go to cart". Back, share and heart float over the image.',
+ 'White, red primary, gold certificate banner on gold tint, province chip earth tint.',
+ 'Push with shared-element image from any card. Artist row → Artist profile. Certificate → Certificate viewer (sample). Add → toast + cart badge bump.'],
+['Marketplace','Shopping Cart','app/cart.tsx','st hd ls ls tx ct',
+ 'Items grouped by artist (each artist ships separately). Row: thumbnail, title, province, price, remove. Per-artist shipping estimate. Promo code field. Summary: subtotal, shipping, total in Kina and buyer currency.',
+ 'Header, CartGroup, OrderRow, PromoInput, CheckoutSummary, StickyFooter.',
+ 'Grouping by artist explains why shipping is itemised and makes "support this artist" tangible. Most art is one of a kind, so no quantity steppers.',
+ 'Sticky "Checkout · K 1,445" primary at the bottom. Remove is a swipe action plus a small text button.',
+ 'White, sand group headers, red total and button.',
+ 'From the header cart icon or CartBar. Checkout → Checkout (asks login if guest). Item tap → Product.'],
+['Marketplace','Checkout','app/checkout/index.tsx','st hd sp_ ls ls tx bt',
+ 'Three-step stepper: Address → Shipping → Payment. Address with saved addresses and PNG province picker. Shipping with Post PNG / DHL Express options and ETA. Payment cards: card, PNG mobile money, bank transfer. Summary card always visible.',
+ 'Stepper, AddressForm, RadioCard, PaymentMethodList, CheckoutSummary, Button primary, SecureNote.',
+ 'Short steps reduce errors on small screens. Export permit fees and duties shown before payment, never after. Payment is held in escrow until delivery is confirmed.',
+ 'Continue (primary, bottom) per step; final step reads "Pay K 1,445.00". Back chevron goes to the previous step.',
+ 'Completed steps rainforest green, current red, selected radio card red border on faint red tint.',
+ 'Push from Cart. Success → Order confirmation (replace, so Back cannot re-pay). Failure → inline error with retry.'],
+['Marketplace','Order Confirmation','app/checkout/success.tsx','st lg ti tx ls bt b2',
+ 'Animated check on a soft gold burst, "Tenkyu tru! Your order is confirmed", order number in mono, artist thank-you note, delivery estimate, certificate preview card.',
+ 'SuccessAnimation (Reanimated), Text, OrderSummaryCard, CertificateCard (preview), Button primary, Button outline.',
+ 'Closes the emotional loop: buyer sees who they supported and that the certificate is already theirs.',
+ 'Track order (primary). Continue shopping (outline) below.',
+ 'White with gold burst, rainforest check, mono order number.',
+ 'Track → Order tracking. Continue → Home (stack reset).'],
+
+['Artist','Artist Profile','app/artist/[id]/index.tsx','im av ti tx ks ch gr',
+ 'Cover image, avatar overlapping, name + seal, craft and village/province, follow count. Stats row: works sold, rating, years practising. Bio story with "Read more". Tabs: Works · Story · Reviews. Workshop video.',
+ 'CoverHeader, Avatar, VerifiedSeal, StatTile row, ExpandableText, Tabs, ArtworkGrid, VideoCard.',
+ 'A biography, not a shop front: lineage, village and teacher matter to collectors and museums.',
+ 'Follow (primary) and Message (outline) side by side below the name. Share in header.',
+ 'Cover with ink scrim, gold seal, earth-brown story tab content.',
+ 'From any artist chip. Works → Product. "See full portfolio" → Portfolio.'],
+['Artist','Artist Portfolio','app/artist/[id]/portfolio.tsx','st hd sg gr gr',
+ 'Segmented control: Available · Sold · Archive. Masonry grid. Sold works stay visible with a "Sold" tag and can be requested as commissions.',
+ 'Header, SegmentedControl, ArtworkGrid, SoldTag, Button outline.',
+ 'Sold works prove a track record and drive commission requests, which raises artist income.',
+ '"Request a commission" outline button sticky at bottom.',
+ 'Sold tag ink with white text; available prices ink.',
+ 'Push from Artist profile. Back → profile.'],
+['Artist','Upload Artwork','app/(studio)/upload.tsx','st hd bl gr ins ch ct',
+ 'Full-screen modal wizard with 4 steps and a progress bar: 1 Photos & details, 2 Story & meaning (text or voice), 3 Price & shipping (weight, size, permit check), 4 Preview as buyers see it.',
+ 'UploadWizard, ImagePicker grid (reorder by drag), Input, Select, ChipGroup, VoiceRecorder, PriceInput with fee breakdown, ProductPreview.',
+ 'Built for low bandwidth: images compress on device and upload in background; drafts save offline. Voice story with transcription lowers the literacy barrier. Price step shows "You receive K X after fees".',
+ 'Save draft (outline) + Continue (primary) bottom. Final: "Publish". Cancel top-left asks to keep the draft.',
+ 'White, red progress and primary, earth tint on the story recorder.',
+ 'Opened from the Studio + button. Publish → Manage artwork with toast "Listed. We\'ll notify you when it sells."'],
+['Artist','Manage Artwork','app/(studio)/artworks.tsx','st hd sg ls ls ls tb',
+ 'Tabs: Live · Drafts · Sold · Hidden. List rows: thumbnail, title, price, views, wishlists, status chip. Swipe for Edit / Hide / Mark sold. Bulk select.',
+ 'Header, SegmentedControl, ArtworkManageRow, SwipeActions, StatusChip, FAB.',
+ 'Rows (not grid) because artists scan numbers, not pictures. Views and wishlists help them price.',
+ 'Red + FAB bottom-right; edit via row tap.',
+ 'Ink header in Studio mode, status chips: live green, draft sand, sold ink, hidden grey.',
+ 'Studio tab root. Row → Edit artwork (same wizard, pre-filled).'],
+['Artist','Sales Dashboard','app/(studio)/dashboard.tsx','hr ks cr ti ls tb',
+ 'Ink header with name, seal and "Buyer mode" switch. Floating earnings card with 7-day bars. KPI tiles: orders, views, rating. "To ship" queue. Tips card ("Add a scale photo to raise sales").',
+ 'StudioHeader, EarningsCard, MiniBarChart, StatTile, OrderRow, StatusChip, TipCard, StudioTabBar.',
+ 'Answers the three questions artists ask: did I earn, what must I ship, how are my works doing. Numbers in Kina, large and plain.',
+ 'Centre red + upload in tab bar. "All orders" link on the queue. Mode switch pill top-right.',
+ 'Ink header, gold active tab, red highlighted bar for today, status chips red tint for urgent.',
+ 'Studio home. Order row → Order detail (ship, print label). Switch → buyer tabs.'],
+['Artist','Earnings Dashboard','app/(studio)/earnings.tsx','st hd hr cr ls bt',
+ 'Balance card: available, pending (in escrow), lifetime. Period toggle (Week / Month / Year) with line chart. Payout history list. Fee breakdown explainer.',
+ 'BalanceCard, SegmentedControl, LineChart, PayoutRow, FeeExplainer, Button primary.',
+ 'Full transparency on fees and escrow builds trust with artists who may have been underpaid by middlemen.',
+ 'Withdraw (primary) on the balance card. Payout method edit in header.',
+ 'Balance card ink with gold figures; chart line red over sand grid.',
+ 'Studio tab. Withdraw → bottom sheet: bank (BSP, Kina Bank) or mobile money.'],
+
+['Buyer','Wishlist','app/(tabs)/wishlist.tsx','st hd sg gr tb',
+ 'Segments: Artworks · Artists. Artwork grid with price-drop and "Only 1 left" flags. Create collections ("For the office"). Followed artists list with new-work dots.',
+ 'Header, SegmentedControl, ArtworkGrid, CollectionChip, ArtistRow, TapaEmptyState.',
+ 'Collectors plan big purchases; collections and price alerts bring them back.',
+ 'Heart on cards to remove. "New collection" text button in header.',
+ 'Red hearts filled, price-drop chip red tint.',
+ 'Tab root. Card → Product.'],
+['Buyer','Purchase History','app/orders/index.tsx','st hd ch ls ls ls',
+ 'Filter chips: All, In progress, Delivered, Cancelled. Order rows: thumbnail, title, artist, date, total, status chip. Year separators.',
+ 'Header, ChipRow, OrderRow, StatusChip, SectionHeader.',
+ 'Simple chronological record; doubles as the buyer\'s certificate archive.',
+ 'Row tap opens detail. "Buy again from artist" on delivered rows.',
+ 'Status: in progress gold tint, delivered green tint, cancelled sand.',
+ 'From Profile. Row → Order tracking.'],
+['Buyer','Order Tracking','app/orders/[id].tsx','st hd im tl tx bt',
+ 'Artwork summary, carrier + tracking number (copyable mono), vertical timeline: Ordered → Artist packing → Shipped from Wewak → In transit → Customs (international) → Delivered. Message artist. Help link.',
+ 'OrderHeader, TrackingTimeline, CopyField, ArtistChip, Button primary/outline.',
+ 'Shipping from remote provinces can take time; a detailed timeline with artist updates reduces anxiety and support tickets.',
+ '"Confirm delivery" primary appears when delivered (releases escrow). Message artist outline.',
+ 'Completed steps green, current red pulse, upcoming sand.',
+ 'From Confirmation or History. Confirm → Review prompt.'],
+['Buyer','Reviews','app/orders/[id]/review.tsx','st hd im ti ch ins bt',
+ 'Artwork thumbnail, 5-star tap row, quick tags (Beautiful craft, Well packed, Great communication), text area, add photos of the piece in its new home.',
+ 'StarInput, ChipGroup, TextArea, ImagePicker, Button primary.',
+ 'Photos of art in homes are the strongest social proof for future buyers and a joy for artists.',
+ 'Submit review (primary, bottom). Skip in header.',
+ 'Gold stars, sand chips, red primary.',
+ 'From Order tracking or a notification. Submit → toast, back to order.'],
+
+['Cultural Archive','Cultural Stories','app/(tabs)/heritage.tsx','st hd ch hr ti rw ti rw tb',
+ 'Wood-grain header "Heritage" with the Tumbuna face mark. Featured long-read hero. Rails: Stories, Provinces, Techniques, Materials. "Story of the week" audio card.',
+ 'WoodHeader, HeroStoryCard, StoryCard rail, ProvinceTile rail, TechniqueCard, AudioCard, TabBar.',
+ 'Feels like a magazine, not a database, so people browse for pleasure. Every story links to related artworks.',
+ 'Cards are actions. "See all" per rail.',
+ 'Earth brown dominates; overlines gold; red reserved for shop links.',
+ 'Tab root. Story → story reader. Rails → their index screens.'],
+['Cultural Archive','Province Collections','app/heritage/provinces/[slug].tsx','st hd mp ti tx ch gr',
+ 'Index: map of PNG with tappable provinces by region (Highlands, Momase, Southern, Islands) plus a list. Detail: hero photo, region, languages, signature crafts, featured artists, available works.',
+ 'ProvinceMap (SVG), RegionTabs, ProvinceHeader, CraftChip, ArtistAvatarRow, ArtworkGrid.',
+ 'Place is identity in PNG. Browsing by province shows the diversity of more than 800 language groups and makes it easy to find regional styles.',
+ '"Shop [Province]" primary at bottom of the detail page.',
+ 'Map regions in earth tones, selected province red.',
+ 'From Heritage or Explore province chips. Craft chip → Technique.'],
+['Cultural Archive','Traditional Techniques','app/heritage/techniques/[slug].tsx','im ti tx tl rw',
+ 'Hero video, technique name (e.g. Bilum looping, Tapa beating, Relief storyboard carving, Coil basket weaving), where practised, step-by-step illustrated chapters, tools used, master artists, works using it.',
+ 'VideoHero, Text, StepChapter (story thread), ToolList, ArtistRow, ArtworkRow.',
+ 'Shows the hours behind an object, which justifies fair prices and teaches respect for the craft.',
+ '"See works made this way" primary at the end.',
+ 'Brown chapter markers, gold tool icons.',
+ 'From Heritage, product details "Technique" row. Back → origin.'],
+['Cultural Archive','Material Library','app/heritage/materials/index.tsx','st hd sr gr gr',
+ 'Searchable grid of materials: kwila, garamut wood, ebony, tulip-tree bark fibre, pandanus, bush vine, cowrie and kina shell, natural clay, plant dyes, wool. Detail sheet: source, sustainability, care instructions, export notes.',
+ 'SearchBar, MaterialTile (macro photo), MaterialSheet, Badge (sustainably sourced).',
+ 'Answers practical buyer questions (care, customs for feathers and shells) and educates at the same time.',
+ 'Tiles open a bottom sheet; sheet has "Shop works in this material".',
+ 'Macro photography, earth tint sheets, green sustainability badge.',
+ 'From Heritage and product Details tab.'],
+['Cultural Archive','Heritage Resources','app/heritage/resources.tsx','st hd ls ls ls',
+ 'Lists of institutions and readings: museums, cultural centres, festivals calendar (Goroka Show, Mount Hagen Show, National Mask Festival), glossary of Tok Pisin and craft terms, cultural protocols for buyers.',
+ 'Header, ResourceRow, EventCard, GlossaryList, ExternalLink.',
+ 'Positions the app as a partner to institutions and gives schools and museums a reason to use it.',
+ 'External links open in an in-app browser.',
+ 'Brown icons, sand rows, event dates in red.',
+ 'From Heritage. External → expo-web-browser.'],
+
+['Verification','Artist Verification','app/(studio)/verify.tsx','st hd sp_ ins im bt',
+ 'Three steps: Identity (NID or voter ID photo + selfie), Community referee (name and phone of a ward councillor, church leader or cultural centre), Portfolio (3 works with in-progress photos). Status tracker after submission.',
+ 'Stepper, DocumentCapture, SelfieCapture, Input, ImagePicker, StatusTracker.',
+ 'Combines document and community verification, because formal ID is not universal. Explains why each item is needed and who sees it.',
+ 'Submit for review (primary). Save and continue later (text).',
+ 'Gold seal preview at top ("This badge will appear on your works"), red primary.',
+ 'From Studio banner. After approval: celebratory sheet and badge appears on all listings.'],
+['Verification','Certificate Viewer','app/certificate/[serial].tsx','st hd im ti tx qr bt',
+ 'Certificate card: bilum band, Kundu seal, title, artist, origin, materials, issued date, current owner, QR, serial in mono, registry status. Below: ownership history timeline.',
+ 'CertificateCard, KunduSeal, QRCode, ProvenanceTimeline, Button outline/dark.',
+ 'Collectors and museums need provenance. The certificate is portable (PDF) and transferable on resale, which protects value.',
+ 'Download PDF (outline) + Transfer owner (dark) bottom. Share in header.',
+ 'Sand background, white card, gold seal, green verified line.',
+ 'From order, product page or scan result. Deep link tumbunaarts://certificate/{serial}.'],
+['Verification','QR Authenticity Scanner','app/scan.tsx','cm tx sh',
+ 'Full-screen camera, gold-cornered viewfinder, red sweep line, hint text, torch toggle. Result bottom sheet: Authentic (green), Ownership transferred (gold, shows history), Not recognised (red, report).',
+ 'CameraView (expo-camera barcode scanning), ScannerOverlay, BottomSheet, StatusIcon, Button primary.',
+ 'Works for anyone, including non-users who scan a tag in a gallery shop. Haptic + sound on success. Offline: queue the serial and verify when back online.',
+ 'Torch and close icons top. Result sheet primary "View certificate" or "Report this item".',
+ 'Dark camera surround, gold corners, red scan line, semantic result colors.',
+ 'From Home header, Profile, or system camera via universal link. Close returns to the origin.'],
+
+['Profile','User Account','app/(tabs)/profile.tsx','st av ti ks ls ls tb',
+ 'Avatar, name, location, member since. Quick tiles: Orders, Certificates, Reviews. Rows: Addresses, Payment methods, Following, Switch to Studio (or "Start selling"), Settings, Help, Log out.',
+ 'ProfileHeader, StatTile, ListRow, ModeSwitchCard, TabBar.',
+ 'Single hub for everything personal. The Studio switch card is prominent for artists and an invitation for buyers.',
+ 'Mode switch card (dark) mid-screen. Log out as a red text row at the bottom.',
+ 'White, ink switch card with gold label, red log-out text.',
+ 'Tab root. Rows push their screens.'],
+['Profile','Settings','app/settings.tsx','st hd tg tg ls',
+ 'Grouped rows: Language (English, Tok Pisin), Currency display (PGK, USD, AUD, EUR), Appearance (system, light, dark), Data saver (low-res images on cellular), Privacy, Security (biometrics), Delete account.',
+ 'Header, SettingsGroup, ListRow, Toggle, Picker sheet.',
+ 'Data saver and Tok Pisin are essential for rural artists on prepaid data.',
+ 'Inline toggles right-aligned. Destructive action last, in red.',
+ 'Sand group backgrounds, red toggles when on.',
+ 'From Profile. Pickers open as bottom sheets.'],
+['Profile','Notifications','app/notifications.tsx','st hd ch ls ls ls',
+ 'Tabs: All · Orders · Activity. Grouped by Today / Earlier. Rows with icon type, text, time, unread dot. Artist examples: "New order from Brisbane". Buyer: "Joseph listed a new storyboard".',
+ 'Header, ChipRow, NotificationRow, UnreadDot, SwipeToDismiss.',
+ 'Order events first; marketing kept out of the bell (goes to email).',
+ '"Mark all read" text in header.',
+ 'Unread row faint red tint, icons by type (gold seal, brown book, ink box).',
+ 'From the bell icon. Row → linked screen.'],
+['Profile','Help Center','app/help.tsx','st hd sr ls ls bt',
+ 'Search FAQs, topic cards (Buying, Shipping & customs, Selling, Payments & payouts, Authenticity), contact options: chat, WhatsApp, phone number shown as text.',
+ 'SearchBar, TopicCard, FAQAccordion, ContactRow, Button primary.',
+ 'Self-service first; human help is one tap away and available in Tok Pisin.',
+ '"Chat with us" primary at the bottom.',
+ 'White, sand topic cards, red primary.',
+ 'From Profile and order screens. Articles push in-app.'],
+];
+
+const sections = [...new Set(S.map(s => s[0]))];
+const filters = document.getElementById('filters');
+filters.innerHTML = `<button class="chip2 on" data-f="all" aria-pressed="true">All ${S.length}</button>` + sections.map(s => `<button class="chip2" data-f="${s}" aria-pressed="false">${s} ${S.filter(x=>x[0]===s).length}</button>`).join('');
+const wf = blocks => `<div class="wf" aria-hidden="true">${blocks.split(' ').map(b => `<div class="${b === 'sp_' ? 'sp_' : b.replace('_','')}"></div>`).join('')}</div>`;
+const map = {st:'st',hd:'hd',sr:'sr',ch:'ch',hr:'hr',im:'im',ti:'ti',rw:'rw',av:'av',gr:'gr',ls:'ls',tx:'tx',in:'in',ins:'ins',bt:'bt',b2:'b2',tb:'tb',ct:'ct',ks:'ks',cr:'cr',sg:'sg',sp_:'sp_',mp:'mp',qr:'qr',cm:'cm',lg:'lg',dt:'dt',tg:'tg',tl:'tl',sh:'sh',bl:'bl',fl:'fl'};
+function renderSpecs(f) {
+  document.getElementById('spec-list').innerHTML = sections.filter(s => f === 'all' || s === f).map(sec => {
+    const items = S.filter(s => s[0] === sec);
+    return `<div class="spec-sec"><h3>${sec}<small>${items.length} screens</small></h3><div class="specs">${items.map(([,name,route,blocks,lay,comp,ux,btn,col,nav]) => `
+      <article class="spec">${wf(blocks.split(' ').map(b=>map[b]||'tx').join(' '))}
+        <div style="min-width:0"><h4>${name}</h4><div class="route">${route}</div>
+        <dl><dt>Layout</dt><dd>${lay}</dd><dt>Components</dt><dd>${comp}</dd><dt>UX rationale</dt><dd>${ux}</dd><dt>Buttons</dt><dd>${btn}</dd><dt>Color</dt><dd>${col}</dd><dt>Navigation</dt><dd>${nav}</dd></dl></div>
+      </article>`).join('')}</div></div>`;
+  }).join('');
+}
+renderSpecs('all');
+filters.addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  filters.querySelectorAll('button').forEach(x => { x.classList.toggle('on', x === b); x.setAttribute('aria-pressed', x === b); });
+  renderSpecs(b.dataset.f);
+});
+</script>
